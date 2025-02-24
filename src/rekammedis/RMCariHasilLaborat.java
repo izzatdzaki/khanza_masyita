@@ -29,14 +29,16 @@ import javax.swing.table.TableColumn;
  *
  * @author dosen
  */
-public final class RMCariHasilLaborat extends javax.swing.JDialog {
+public class RMCariHasilLaborat extends javax.swing.JDialog {
     private final DefaultTableModel tabMode;
     private validasi Valid=new validasi();
     private Connection koneksi=koneksiDB.condb();
     private PreparedStatement ps;
     private ResultSet rs;
-    private String norawat="",sql="";
-    private int z=0;
+    private String norawat="";
+    private int z=0,i=0,jml=0,index=0;
+    private boolean[] pilih;
+    private String[] tanggal,jam,laboratorium;
     /** Creates new form DlgPenyakit
      * @param parent
      * @param modal */
@@ -46,18 +48,24 @@ public final class RMCariHasilLaborat extends javax.swing.JDialog {
         this.setLocation(10,2);
         setSize(656,250);
 
-        Object[] row={"P","Tanggal","Jam","Hasil Pemeriksaan"};
-        tabMode=new DefaultTableModel(null,row){
-              @Override public boolean isCellEditable(int rowIndex, int colIndex){
-                boolean a = false;
-                if (colIndex==0) {
-                    a=true;
-                }
-                return a;
-             }
+//        Object[] row={"Tanggal","Jam","Hasil Pemeriksaan"};
+//        tabMode=new DefaultTableModel(null,row){
+//              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
+//        };
+//        tbKamar.setModel(tabMode);
+        tabMode=new DefaultTableModel(null,new Object[]{
+                "P","Tanggal","Jam","Hasil Pemeriksaan"
+            }){
              Class[] types = new Class[] {
                 java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
              };
+             @Override public boolean isCellEditable(int rowIndex, int colIndex){
+               boolean a = false;
+               if (colIndex==0) {
+                 a=true;
+               }
+               return a;
+             }
              @Override
              public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
@@ -70,13 +78,13 @@ public final class RMCariHasilLaborat extends javax.swing.JDialog {
         for (z= 0; z < 4; z++) {
             TableColumn column = tbKamar.getColumnModel().getColumn(z);
             if(z==0){
-                column.setPreferredWidth(20);
+                column.setPreferredWidth(15);
             }else if(z==1){
                 column.setPreferredWidth(65);
             }else if(z==2){
                 column.setPreferredWidth(50);
             }else if(z==3){
-                column.setPreferredWidth(730);
+                column.setPreferredWidth(750);
             }
         }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());
@@ -115,10 +123,9 @@ public final class RMCariHasilLaborat extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPopupMenu1 = new javax.swing.JPopupMenu();
-        ppPilihSemua = new javax.swing.JMenuItem();
+        Popup = new javax.swing.JPopupMenu();
         ppBersihkan = new javax.swing.JMenuItem();
-        ppNilaiTinggi = new javax.swing.JMenuItem();
+        ppSemua = new javax.swing.JMenuItem();
         internalFrame1 = new widget.InternalFrame();
         Scroll = new widget.ScrollPane();
         tbKamar = new widget.Table();
@@ -131,55 +138,39 @@ public final class RMCariHasilLaborat extends javax.swing.JDialog {
         LCount = new widget.Label();
         BtnKeluar = new widget.Button();
 
-        jPopupMenu1.setName("jPopupMenu1"); // NOI18N
-
-        ppPilihSemua.setBackground(new java.awt.Color(255, 255, 254));
-        ppPilihSemua.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        ppPilihSemua.setForeground(new java.awt.Color(50, 50, 50));
-        ppPilihSemua.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
-        ppPilihSemua.setText("Pilih Semua");
-        ppPilihSemua.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        ppPilihSemua.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        ppPilihSemua.setName("ppPilihSemua"); // NOI18N
-        ppPilihSemua.setPreferredSize(new java.awt.Dimension(170, 26));
-        ppPilihSemua.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ppPilihSemuaActionPerformed(evt);
-            }
-        });
-        jPopupMenu1.add(ppPilihSemua);
+        Popup.setName("Popup"); // NOI18N
 
         ppBersihkan.setBackground(new java.awt.Color(255, 255, 254));
         ppBersihkan.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
         ppBersihkan.setForeground(new java.awt.Color(50, 50, 50));
         ppBersihkan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
-        ppBersihkan.setText("Hilangkan Pilihan");
+        ppBersihkan.setText("Bersihkan Pilihan");
         ppBersihkan.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         ppBersihkan.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         ppBersihkan.setName("ppBersihkan"); // NOI18N
-        ppBersihkan.setPreferredSize(new java.awt.Dimension(170, 26));
+        ppBersihkan.setPreferredSize(new java.awt.Dimension(200, 25));
         ppBersihkan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ppBersihkanActionPerformed(evt);
             }
         });
-        jPopupMenu1.add(ppBersihkan);
+        Popup.add(ppBersihkan);
 
-        ppNilaiTinggi.setBackground(new java.awt.Color(255, 255, 254));
-        ppNilaiTinggi.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        ppNilaiTinggi.setForeground(new java.awt.Color(50, 50, 50));
-        ppNilaiTinggi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
-        ppNilaiTinggi.setText("Tampilkan Tidak Normal");
-        ppNilaiTinggi.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        ppNilaiTinggi.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        ppNilaiTinggi.setName("ppNilaiTinggi"); // NOI18N
-        ppNilaiTinggi.setPreferredSize(new java.awt.Dimension(170, 26));
-        ppNilaiTinggi.addActionListener(new java.awt.event.ActionListener() {
+        ppSemua.setBackground(new java.awt.Color(255, 255, 254));
+        ppSemua.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        ppSemua.setForeground(new java.awt.Color(50, 50, 50));
+        ppSemua.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        ppSemua.setText("Pilih Semua");
+        ppSemua.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        ppSemua.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        ppSemua.setName("ppSemua"); // NOI18N
+        ppSemua.setPreferredSize(new java.awt.Dimension(200, 25));
+        ppSemua.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ppNilaiTinggiActionPerformed(evt);
+                ppSemuaActionPerformed(evt);
             }
         });
-        jPopupMenu1.add(ppNilaiTinggi);
+        Popup.add(ppSemua);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -197,12 +188,11 @@ public final class RMCariHasilLaborat extends javax.swing.JDialog {
         internalFrame1.setName("internalFrame1"); // NOI18N
         internalFrame1.setLayout(new java.awt.BorderLayout(1, 1));
 
-        Scroll.setComponentPopupMenu(jPopupMenu1);
         Scroll.setName("Scroll"); // NOI18N
         Scroll.setOpaque(true);
 
         tbKamar.setAutoCreateRowSorter(true);
-        tbKamar.setComponentPopupMenu(jPopupMenu1);
+        tbKamar.setComponentPopupMenu(Popup);
         tbKamar.setName("tbKamar"); // NOI18N
         tbKamar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -314,7 +304,6 @@ public final class RMCariHasilLaborat extends javax.swing.JDialog {
 }//GEN-LAST:event_TCariKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
-        sql="";
         tampil();
 }//GEN-LAST:event_BtnCariActionPerformed
 
@@ -328,7 +317,6 @@ public final class RMCariHasilLaborat extends javax.swing.JDialog {
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
         TCari.setText("");
-        sql="";
         tampil();
 }//GEN-LAST:event_BtnAllActionPerformed
 
@@ -371,22 +359,17 @@ public final class RMCariHasilLaborat extends javax.swing.JDialog {
         tampil();
     }//GEN-LAST:event_formWindowOpened
 
-    private void ppPilihSemuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppPilihSemuaActionPerformed
-        for(z=0;z<tbKamar.getRowCount();z++){
-            tbKamar.setValueAt(true,z,0);
-        }
-    }//GEN-LAST:event_ppPilihSemuaActionPerformed
+  private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppBersihkanActionPerformed
+    for(i=0;i<tbKamar.getRowCount();i++){
+      tbKamar.setValueAt(false,i,0);
+    }
+  }//GEN-LAST:event_ppBersihkanActionPerformed
 
-    private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppBersihkanActionPerformed
-        for(z=0;z<tbKamar.getRowCount();z++){
-            tbKamar.setValueAt(false,z,0);
-        }
-    }//GEN-LAST:event_ppBersihkanActionPerformed
-
-    private void ppNilaiTinggiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppNilaiTinggiActionPerformed
-        sql="and ((LOWER(detail_periksa_lab.keterangan)='l') or (LOWER(detail_periksa_lab.keterangan)='t') or (LOWER(detail_periksa_lab.keterangan)='h')) ";
-        tampil();
-    }//GEN-LAST:event_ppNilaiTinggiActionPerformed
+  private void ppSemuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppSemuaActionPerformed
+    for(i=0;i<tbKamar.getRowCount();i++){
+      tbKamar.setValueAt(true,i,0);
+    }
+  }//GEN-LAST:event_ppSemuaActionPerformed
 
     /**
     * @param args the command line arguments
@@ -407,28 +390,61 @@ public final class RMCariHasilLaborat extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private widget.Button BtnAll;
     private widget.Button BtnCari;
-    public widget.Button BtnKeluar;
+    private widget.Button BtnKeluar;
     private widget.Label LCount;
+    private javax.swing.JPopupMenu Popup;
     private widget.ScrollPane Scroll;
     private widget.TextBox TCari;
     private widget.InternalFrame internalFrame1;
-    private javax.swing.JPopupMenu jPopupMenu1;
     private widget.Label label10;
     private widget.Label label9;
     private widget.panelisi panelisi3;
     private javax.swing.JMenuItem ppBersihkan;
-    private javax.swing.JMenuItem ppNilaiTinggi;
-    private javax.swing.JMenuItem ppPilihSemua;
+    private javax.swing.JMenuItem ppSemua;
     private widget.Table tbKamar;
     // End of variables declaration//GEN-END:variables
 
     public void tampil() {
+        jml=0;
+        for(i=0;i<tabMode.getRowCount();i++){
+            if(tabMode.getValueAt(i,0).toString().equals("true")){
+                jml++;
+            }
+        }
+
+        pilih=null;
+        pilih=new boolean[jml]; 
+        tanggal=null;
+        tanggal=new String[jml];
+        jam=null;
+        jam=new String[jml];
+        laboratorium=null;
+        laboratorium=new String[jml];
+        
+        index=0;        
+        for(i=0;i<tabMode.getRowCount();i++){
+            if(tabMode.getValueAt(i,0).toString().equals("true")){
+                pilih[index]=true;
+                tanggal[index]=tabMode.getValueAt(i,1).toString();
+                jam[index]=tabMode.getValueAt(i,2).toString();
+                laboratorium[index]=tabMode.getValueAt(i,3).toString();
+                index++;
+            }
+        }       
+
+        Valid.tabelKosong(tabMode);
+
+        for(i=0;i<jml;i++){
+            tabMode.addRow(new Object[] {
+                pilih[i],tanggal[i],jam[i],laboratorium[i]
+            });
+        }
         Valid.tabelKosong(tabMode);
         try{
             ps=koneksi.prepareStatement(
                     "select detail_periksa_lab.tgl_periksa,detail_periksa_lab.jam,template_laboratorium.Pemeriksaan, detail_periksa_lab.nilai "+
                     "from detail_periksa_lab inner join template_laboratorium on detail_periksa_lab.id_template=template_laboratorium.id_template where "+
-                    "detail_periksa_lab.no_rawat=? and (detail_periksa_lab.tgl_periksa like ? or template_laboratorium.Pemeriksaan like ?) "+sql+
+                    "detail_periksa_lab.no_rawat=? and (detail_periksa_lab.tgl_periksa like ? or template_laboratorium.Pemeriksaan like ?) "+
                     "order by detail_periksa_lab.tgl_periksa, detail_periksa_lab.jam");
             try{
                 ps.setString(1,norawat);

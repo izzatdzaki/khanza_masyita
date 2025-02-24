@@ -441,6 +441,7 @@ public final class DlgPeresepanDokter extends javax.swing.JDialog {
         LTotal = new widget.Label();
         jLabel7 = new widget.Label();
         LTotalTagihan = new widget.Label();
+        NoTelp = new widget.TextBox();
         TabRawat = new javax.swing.JTabbedPane();
         Scroll = new widget.ScrollPane();
         tbResep = new widget.Table();
@@ -738,7 +739,7 @@ public final class DlgPeresepanDokter extends javax.swing.JDialog {
             }
         });
         FormInput.add(NoResep);
-        NoResep.setBounds(528, 72, 130, 23);
+        NoResep.setBounds(530, 70, 130, 23);
 
         jLabel8.setText("Tgl.Resep :");
         jLabel8.setName("jLabel8"); // NOI18N
@@ -746,7 +747,7 @@ public final class DlgPeresepanDokter extends javax.swing.JDialog {
         jLabel8.setBounds(0, 42, 72, 23);
 
         DTPBeri.setForeground(new java.awt.Color(50, 70, 50));
-        DTPBeri.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "13-04-2023" }));
+        DTPBeri.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "16-04-2024" }));
         DTPBeri.setDisplayFormat("dd-MM-yyyy");
         DTPBeri.setName("DTPBeri"); // NOI18N
         DTPBeri.setOpaque(false);
@@ -850,6 +851,16 @@ public final class DlgPeresepanDokter extends javax.swing.JDialog {
         LTotalTagihan.setPreferredSize(new java.awt.Dimension(80, 23));
         FormInput.add(LTotalTagihan);
         LTotalTagihan.setBounds(588, 42, 95, 23);
+
+        NoTelp.setHighlighter(null);
+        NoTelp.setName("NoTelp"); // NOI18N
+        NoTelp.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                NoTelpKeyPressed(evt);
+            }
+        });
+        FormInput.add(NoTelp);
+        NoTelp.setBounds(710, 70, 130, 23);
 
         internalFrame1.add(FormInput, java.awt.BorderLayout.PAGE_START);
 
@@ -1484,6 +1495,10 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             
     }//GEN-LAST:event_DTPBeriItemStateChanged
 
+    private void NoTelpKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NoTelpKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_NoTelpKeyPressed
+
     /**
     * @param args the command line arguments
     */
@@ -1521,6 +1536,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private widget.Label LTotalTagihan;
     private widget.TextBox NmDokter;
     private widget.TextBox NoResep;
+    private widget.TextBox NoTelp;
     private javax.swing.JPopupMenu Popup;
     private widget.ScrollPane Scroll;
     private widget.ScrollPane Scroll1;
@@ -3989,5 +4005,19 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 }
             }
         }               
+    }
+    
+    public void setNoRmTemplate(String norwt,String KodeDokter,String NamaDokter,String kodepj,String status) {        
+        TNoRw.setText(norwt);
+        Sequel.cariIsi("select concat(pasien.no_rkm_medis,' ',pasien.nm_pasien,' (',pasien.umur,')') from reg_periksa inner join pasien "+
+                    " on reg_periksa.no_rkm_medis=pasien.no_rkm_medis where no_rawat=? ",TPasien,TNoRw.getText());
+        KdDokter.setText(KodeDokter);
+        NmDokter.setText(NamaDokter);
+        KdPj.setText(kodepj);
+        TCari.requestFocus();
+        this.status=status;
+        SetHarga();
+        ubah=false;
+        copy=false;
     }
 }

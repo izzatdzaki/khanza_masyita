@@ -1080,7 +1080,7 @@ public final class RMDataCatatanKeperawatanRanap extends javax.swing.JDialog {
                     "catatan_keperawatan_ranap.nip,petugas.nama from catatan_keperawatan_ranap inner join reg_periksa on catatan_keperawatan_ranap.no_rawat=reg_periksa.no_rawat "+
                     "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
                     "inner join petugas on catatan_keperawatan_ranap.nip=petugas.nip where "+
-                    "catatan_keperawatan_ranap.tanggal between ? and ? order by catatan_keperawatan_ranap.tanggal,catatan_keperawatan_ranap.jam");
+                    "catatan_keperawatan_ranap.tanggal between ? and ? order by catatan_keperawatan_ranap.tanggal desc,catatan_keperawatan_ranap.jam desc");
             }else{
                 ps=koneksi.prepareStatement(
                     "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,reg_periksa.umurdaftar,reg_periksa.sttsumur,"+
@@ -1089,7 +1089,7 @@ public final class RMDataCatatanKeperawatanRanap extends javax.swing.JDialog {
                     "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
                     "inner join petugas on catatan_keperawatan_ranap.nip=petugas.nip where "+
                     "catatan_keperawatan_ranap.tanggal between ? and ? and (reg_periksa.no_rawat like ? or pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or catatan_keperawatan_ranap.nip like ? or petugas.nama like ?) "+
-                    "order by catatan_keperawatan_ranap.tanggal,catatan_keperawatan_ranap.jam ");
+                    "order by catatan_keperawatan_ranap.tanggal desc ,catatan_keperawatan_ranap.jam desc ");
             }
                 
             try {
@@ -1324,7 +1324,7 @@ public final class RMDataCatatanKeperawatanRanap extends javax.swing.JDialog {
         if(Sequel.menyimpantf("catatan_keperawatan_ranap","?,?,?,?,?","Data",5,new String[]{
             Valid.SetTgl(Tanggal.getSelectedItem()+""),Jam.getSelectedItem()+":"+Menit.getSelectedItem()+":"+Detik.getSelectedItem(),TNoRw.getText(),Uraian.getText(),NIP.getText()
         })==true){
-            tabMode.addRow(new String[]{
+            tabMode.insertRow(0, new Object[]{
                 TNoRw.getText(),TNoRM.getText(),TPasien.getText(),Umur.getText(),JK.getText(),TglLahir.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+""),
                 Jam.getSelectedItem()+":"+Menit.getSelectedItem()+":"+Detik.getSelectedItem(),Uraian.getText(),NIP.getText(),NamaPetugas.getText()
             });

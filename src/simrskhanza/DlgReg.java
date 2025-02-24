@@ -952,6 +952,8 @@ public final class DlgReg extends javax.swing.JDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        
+        MnUpdateUmur = new javax.swing.JMenuItem();
 
         jPopupMenu1 = new javax.swing.JPopupMenu();
         MnDataRM = new javax.swing.JMenu();
@@ -1368,6 +1370,9 @@ public final class DlgReg extends javax.swing.JDialog {
         tbPetugas = new widget.Table();
         Scroll1 = new widget.ScrollPane();
         tbPetugas2 = new widget.Table();
+        
+//        Tambah Tombol
+        Btn_sep = new widget.Button();
 
         jPopupMenu1.setName("jPopupMenu1"); // NOI18N
 
@@ -6405,6 +6410,24 @@ public final class DlgReg extends javax.swing.JDialog {
             }
         });
         panelGlass6.add(BtnKeluar);
+        
+        Btn_sep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/130.png"))); // NOI18N
+        Btn_sep.setMnemonic('M');
+        Btn_sep.setText("BELUM TERBIT SEP");
+        Btn_sep.setToolTipText("Alt+M");
+        Btn_sep.setName("Btn_sep"); // NOI18N
+        Btn_sep.setPreferredSize(new java.awt.Dimension(150, 30));
+        Btn_sep.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_sepActionPerformed(evt);
+            }
+        });
+        Btn_sep.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                Btn_sepKeyPressed(evt);
+            }
+        });
+        panelGlass6.add(Btn_sep);
 
         jPanel2.add(panelGlass6, java.awt.BorderLayout.PAGE_END);
 
@@ -6893,6 +6916,26 @@ public final class DlgReg extends javax.swing.JDialog {
             }
         });
         PanelInput.add(ChkInput, java.awt.BorderLayout.PAGE_END);
+        
+        //        Tambah Menu Update Umur
+
+        MnUpdateUmur.setBackground(new java.awt.Color(255, 255, 254));
+        MnUpdateUmur.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        MnUpdateUmur.setForeground(new java.awt.Color(50, 50, 50));
+        MnUpdateUmur.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        MnUpdateUmur.setMnemonic('w');
+        MnUpdateUmur.setText("Update Umur");
+        MnUpdateUmur.setToolTipText("W");
+        MnUpdateUmur.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        MnUpdateUmur.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        MnUpdateUmur.setName("MnUpdateUmur"); // NOI18N
+        MnUpdateUmur.setPreferredSize(new java.awt.Dimension(320, 26));
+        MnUpdateUmur.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MnUpdateUmurActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(MnUpdateUmur);
 
         internalFrame1.add(PanelInput, java.awt.BorderLayout.PAGE_START);
 
@@ -15303,6 +15346,28 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
         }
     }
     
+    private void Btn_sepActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        terbitsep="and reg_periksa.kd_pj in (select password_asuransi.kd_pj from password_asuransi) and reg_periksa.no_rawat not in (select bridging_sep.no_rawat from bridging_sep)";
+        if(TabRawat.getSelectedIndex()==0){
+            tampil();
+        }else if(TabRawat.getSelectedIndex()==1){
+            tampil2();
+        }
+    }                                       
+
+    private void Btn_sepKeyPressed(java.awt.event.KeyEvent evt) {                                   
+        // TODO add your handling code here:
+    }    
+    
+    //    Tambah Fungsi Update Umur
+    private void MnUpdateUmurActionPerformed(java.awt.event.ActionEvent evt) {                                             
+    Sequel.queryu2("update reg_periksa set umurdaftar=?,sttsumur=? where no_rawat=?",3,
+                            new String[]{
+                                umur,sttsumur,TNoRw.getText()
+                            });
+    BtnCariActionPerformed(null);
+    }      
+    
     /**
     * @param args the command line arguments
     */
@@ -15320,6 +15385,10 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    
+    private widget.Button Btn_sep;
+    private javax.swing.JMenuItem MnUpdateUmur;
+    
     private widget.TextBox AsalRujukan;
     private widget.Button BtnAll;
     private widget.Button BtnBatal;

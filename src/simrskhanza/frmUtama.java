@@ -1788,6 +1788,8 @@ public class frmUtama extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         lblUser = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
+        lblUserLogin = new javax.swing.JLabel();
+        jSeparator8 = new javax.swing.JSeparator();
         lblTgl = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
         LblIP = new javax.swing.JLabel();
@@ -2064,7 +2066,7 @@ public class frmUtama extends javax.swing.JFrame {
 
         tanggal.setEditable(false);
         tanggal.setForeground(new java.awt.Color(50, 70, 50));
-        tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "28/09/2024" }));
+        tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09/11/2024" }));
         tanggal.setDisplayFormat("dd/MM/yyyy");
         tanggal.setName("tanggal"); // NOI18N
         tanggal.setOpaque(false);
@@ -7404,6 +7406,23 @@ public class frmUtama extends javax.swing.JFrame {
         jSeparator2.setPreferredSize(new java.awt.Dimension(1, 21));
         internalFrame4.add(jSeparator2);
 
+        lblUserLogin.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        lblUserLogin.setForeground(new java.awt.Color(50, 50, 50));
+        lblUserLogin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblUserLogin.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblUserLogin.setName("lblUserLogin"); // NOI18N
+        lblUserLogin.setPreferredSize(new java.awt.Dimension(170, 23));
+        internalFrame4.add(lblUserLogin);
+
+        jSeparator8.setBackground(new java.awt.Color(225, 61, 142));
+        jSeparator8.setForeground(new java.awt.Color(225, 61, 142));
+        jSeparator8.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jSeparator8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(217, 1, 122)));
+        jSeparator8.setName("jSeparator8"); // NOI18N
+        jSeparator8.setOpaque(true);
+        jSeparator8.setPreferredSize(new java.awt.Dimension(1, 21));
+        internalFrame4.add(jSeparator8);
+
         lblTgl.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
         lblTgl.setForeground(new java.awt.Color(50, 50, 50));
         lblTgl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -8360,6 +8379,7 @@ public class frmUtama extends javax.swing.JFrame {
                 MnLogin.setText("Log In");
                 lblStts.setText("Status Admin : ");
                 lblUser.setText("Log Out");
+                lblUserLogin.setText(" "+ Sequel.cariIsi("select nama from pegawai where nik=?", akses.getkode()));
                 BtnMenu.setEnabled(false);
                 akses.setLogOut();
                 isTutup();
@@ -8406,6 +8426,7 @@ public class frmUtama extends javax.swing.JFrame {
                     MnLogin.setText("Log Out");
                     lblStts.setText("Admin : ");
                     lblUser.setText("Admin Utama");
+                    lblUserLogin.setText(" "+ Sequel.cariIsi("select nama from pegawai where nik=?", akses.getkode()));
                     if(AKTIFKANTRACKSQL.equals("yes")){
                         Sequel.menyimpan("tracker","'Admin Utama',current_date(),current_time()","Login");
                     }
@@ -8416,6 +8437,7 @@ public class frmUtama extends javax.swing.JFrame {
                     MnLogin.setText("Log Out");
                     lblStts.setText("Admin : ");
                     lblUser.setText(akses.getkode());
+                    lblUserLogin.setText(" "+ Sequel.cariIsi("select nama from pegawai where nik=?", akses.getkode()));
                     MnGantiPassword.setEnabled(true);
                     MnPengajuanCutiPegawai.setEnabled(true);
                     BtnToolReg.setEnabled(akses.getregistrasi());
@@ -8490,7 +8512,8 @@ public class frmUtama extends javax.swing.JFrame {
                     BtnLog.setText("Log In");
                     MnLogin.setText("Log In");
                     lblStts.setText("Status Admin : ");
-                    lblUser.setText("Log Out");   
+                    lblUser.setText("Log Out");  
+                    lblUserLogin.setText(" "+ Sequel.cariIsi("select nama from pegawai where nik=?", akses.getkode()));
                 }
             } catch (Exception e) {
                 System.out.println("Notifikasi : "+e);
@@ -22472,12 +22495,14 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
+    private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
     private widget.Label label35;
     private widget.Label label36;
     private javax.swing.JLabel lblStts;
     private javax.swing.JLabel lblTgl;
     private javax.swing.JLabel lblUser;
+    private javax.swing.JLabel lblUserLogin;
     private usu.widget.glass.PanelGlass panelGlass1;
     private usu.widget.glass.PanelGlass panelJudul;
     private widget.InternalFrame panelMenu;

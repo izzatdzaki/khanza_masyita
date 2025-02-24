@@ -61,7 +61,7 @@ public class DlgIKBBayi extends javax.swing.JDialog {
             nmayah="",alamatayah="",kerjaayah="",noskl="",pnlgnama="",tindaklhr="",
             bpjsibu="",bpjsayah="",notlp="",bpjsby="",nikplpr="",nmplpr="",almtplpr="",
             krjplpr="",niks1="",nms1="",almts1="",krjs1="",niks2="",nms2="",almts2="",
-            krjs2="",umribu="",umrayah="",umrplpr="",umrs1="",umrs2="";
+            krjs2="",umribu="",umrayah="",umrplpr="",umrs1="",umrs2="", finger="";
 
     /** Creates new form DlgProgramStudi
      * @param parent
@@ -3191,7 +3191,8 @@ private void MnKartuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 param.put("kontakrs",akses.getkontakrs());
                 param.put("emailrs",akses.getemailrs());   
                 param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-                param.put("logo2",Sequel.cariGambar("select setting.logo from setting")); 
+                param.put("logo2",Sequel.cariGambar("select setting.logo from setting"));
+                param.put("finger",Sequel.cariIsi("select * from pasien_bayi where no_rkm_medis='061172'"));
                 Valid.MyReportqry("rptSKL.jasper","report","::[ Surat Kelahiran Bayi ]::",
                        "select pasien.no_rkm_medis, pasien.nm_pasien, pasien.jk, "+
                         "pasien.tgl_lahir,pasien_bayi.jam_lahir, pasien.umur, "+
@@ -4073,7 +4074,7 @@ private void MnKartuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                    "pasien_bayi.berat_badan,pasien_bayi.panjang_badan, pasien_bayi.lingkar_kepala, "+
                    "pasien_bayi.proses_lahir,pasien_bayi.anakke, pasien_bayi.keterangan, "+
                    "pasien_bayi.diagnosa,pasien_bayi.penyulit_kehamilan,pasien_bayi.ketuban,"+
-                   "pasien_bayi.lingkar_perut,pasien_bayi.lingkar_dada,pegawai.nama,"+
+                   "pasien_bayi.lingkar_perut,pasien_bayi.lingkar_dada,pasien_bayi.penolong,"+
                    "pasien_bayi.no_skl,pasien_bayi.g,pasien_bayi.p,pasien_bayi.a,pasien_bayi.f1,pasien_bayi.u1,pasien_bayi.t1,"+
                    "pasien_bayi.r1,pasien_bayi.w1,pasien_bayi.n1,pasien_bayi.f5,pasien_bayi.u5,"+
                    "pasien_bayi.t5,pasien_bayi.r5,pasien_bayi.w5,pasien_bayi.n5,pasien_bayi.f10,"+
@@ -4112,6 +4113,7 @@ private void MnKartuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                         rs.getString(45),rs.getString(46),rs.getString(47),rs.getString(48),
                         rs.getString(49),rs.getString(50)
                     });
+               
                 }
             } catch (Exception e) {
                 System.out.println("Notif : "+e);
@@ -4129,6 +4131,7 @@ private void MnKartuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         int b=tabMode.getRowCount();
         LCount.setText(""+b);
     }
+    
 
     public void emptTeks() {
         NoRm.setText("");

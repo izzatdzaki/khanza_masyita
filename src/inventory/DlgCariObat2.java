@@ -511,6 +511,10 @@ public final class DlgCariObat2 extends javax.swing.JDialog {
         kdgudang = new widget.TextBox();
         nmgudang = new widget.TextBox();
         BtnGudang = new widget.Button();
+        jLabel12 = new widget.Label();
+        TPasien1 = new widget.TextBox();
+        jLabel13 = new widget.Label();
+        Bb = new widget.TextBox();
         TabRawat = new javax.swing.JTabbedPane();
         Scroll = new widget.ScrollPane();
         tbObat = new widget.Table();
@@ -761,7 +765,7 @@ public final class DlgCariObat2 extends javax.swing.JDialog {
         jLabel5.setBounds(4, 10, 68, 23);
 
         DTPTgl.setForeground(new java.awt.Color(50, 70, 50));
-        DTPTgl.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "25-10-2021" }));
+        DTPTgl.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "20-03-2024" }));
         DTPTgl.setDisplayFormat("dd-MM-yyyy");
         DTPTgl.setName("DTPTgl"); // NOI18N
         DTPTgl.setOpaque(false);
@@ -893,6 +897,30 @@ public final class DlgCariObat2 extends javax.swing.JDialog {
         });
         FormInput.add(BtnGudang);
         BtnGudang.setBounds(332, 40, 28, 23);
+
+        jLabel12.setText("Nama Pasien :");
+        jLabel12.setName("jLabel12"); // NOI18N
+        jLabel12.setPreferredSize(new java.awt.Dimension(68, 23));
+        FormInput.add(jLabel12);
+        jLabel12.setBounds(410, 40, 80, 23);
+
+        TPasien1.setEditable(false);
+        TPasien1.setName("TPasien1"); // NOI18N
+        TPasien1.setPreferredSize(new java.awt.Dimension(207, 23));
+        FormInput.add(TPasien1);
+        TPasien1.setBounds(500, 40, 237, 23);
+
+        jLabel13.setText("BB Pasien :");
+        jLabel13.setName("jLabel13"); // NOI18N
+        jLabel13.setPreferredSize(new java.awt.Dimension(68, 23));
+        FormInput.add(jLabel13);
+        jLabel13.setBounds(740, 40, 80, 23);
+
+        Bb.setEditable(false);
+        Bb.setName("Bb"); // NOI18N
+        Bb.setPreferredSize(new java.awt.Dimension(207, 23));
+        FormInput.add(Bb);
+        Bb.setBounds(830, 40, 50, 23);
 
         internalFrame1.add(FormInput, java.awt.BorderLayout.PAGE_START);
 
@@ -1897,6 +1925,7 @@ private void ChkJlnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private widget.TextBox Bb;
     private widget.Button BtnAll;
     private widget.Button BtnCari;
     private widget.Button BtnGudang;
@@ -1920,11 +1949,14 @@ private void ChkJlnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private widget.TextBox TNoRM;
     private widget.TextBox TNoRw;
     private widget.TextBox TPasien;
+    private widget.TextBox TPasien1;
     private javax.swing.JTabbedPane TabRawat;
     private widget.ComboBox cmbDtk;
     private widget.ComboBox cmbJam;
     private widget.ComboBox cmbMnt;
     private widget.InternalFrame internalFrame1;
+    private widget.Label jLabel12;
+    private widget.Label jLabel13;
     private widget.Label jLabel5;
     private javax.swing.JPanel jPanel3;
     private widget.TextBox kdgudang;
@@ -2661,6 +2693,9 @@ private void ChkJlnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         cmbJam.setSelectedItem(jam);
         cmbMnt.setSelectedItem(menit);
         cmbDtk.setSelectedItem(detik);
+        TPasien1.setText(pasien);
+        Bb.setText(Sequel.cariIsi("select pemeriksaan_ranap.berat from pemeriksaan_ranap where pemeriksaan_ranap.no_rawat = ?", norwt));
+        
         ChkJln.setSelected(status);
         this.noresep="";
         KdPj.setText(Sequel.cariIsi("select reg_periksa.kd_pj from reg_periksa where reg_periksa.no_rawat=?",norwt));

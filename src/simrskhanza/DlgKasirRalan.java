@@ -54,6 +54,7 @@ import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -272,9 +273,9 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
 
         tabModekasir=new DefaultTableModel(null,new String[]{
             "Kode Dokter","Dokter Dituju","No.RM","Pasien",
-            "Poliklinik","Penanggung Jawab","Alamat P.J.","Hubungan P.J.",
+            "Poliklinik", "No. SEP","Alamat P.J.","Hubungan P.J.",
             "Biaya Reg","Jenis Bayar","Status","No.Rawat","Tanggal",
-            "Jam","No.Reg","Status Bayar","Stts Poli","Kd PJ","Kd Poli","No.Telp Pasien"}){
+            "Jam","No.Reg","Status Bayar","Stts Poli","Kd PJ","Kd Poli","No.Telp Pasien","Penanggung Jawab" }){
               @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
         tbKasirRalan.setModel(tabModekasir);
@@ -282,7 +283,7 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
         tbKasirRalan.setPreferredScrollableViewportSize(new Dimension(800,800));
         tbKasirRalan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 20; i++) {
+        for (i = 0; i < 21; i++) {
             TableColumn column = tbKasirRalan.getColumnModel().getColumn(i);
             if(i==0){
                 column.setPreferredWidth(70);
@@ -325,6 +326,8 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
             }else if(i==19){
+                column.setPreferredWidth(95);
+            }else if(i==20){
                 column.setPreferredWidth(95);
             }
         }
@@ -1061,6 +1064,16 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
         TNoRMCari = new widget.TextBox();
         jLabel8 = new widget.Label();
         TPasienCari = new widget.TextBox();
+        
+//        Tambah Tombol
+
+        Nohp = new widget.TextBox();
+        BtnKetPenunjang = new widget.Button();
+        
+        
+        BtnPanggil = new widget.Button();
+        jLabel11 = new widget.Label();
+        TLoket = new widget.TextBox();
 
         jPopupMenu1.setForeground(new java.awt.Color(50, 50, 50));
         jPopupMenu1.setName("jPopupMenu1"); // NOI18N
@@ -6475,6 +6488,45 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
                 BtnKeluarKeyPressed(evt);
             }
         });
+        
+        //        BTN PANGGIL
+        BtnPanggil.setBorder(null);
+        BtnPanggil.setForeground(new java.awt.Color(51, 0, 204));
+        BtnPanggil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/user.png"))); // NOI18N
+        BtnPanggil.setMnemonic('P');
+        BtnPanggil.setText("Loket");
+        BtnPanggil.setToolTipText("Alt+P");
+        BtnPanggil.setGlassColor(new java.awt.Color(0, 255, 102));
+        BtnPanggil.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        BtnPanggil.setName("BtnPanggil"); // NOI18N
+        BtnPanggil.setPreferredSize(new java.awt.Dimension(100, 30));
+        BtnPanggil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnPanggilActionPerformed(evt);
+            }
+        });
+        BtnPanggil.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BtnPanggilKeyPressed(evt);
+            }
+        });
+        panelGlass6.add(BtnPanggil);
+        BtnPanggil.getAccessibleContext().setAccessibleDescription("");
+
+        jLabel11.setText("Loket :");
+        jLabel11.setName("jLabel11"); // NOI18N
+        jLabel11.setPreferredSize(new java.awt.Dimension(35, 30));
+        panelGlass6.add(jLabel11);
+
+        TLoket.setName("TLoket"); // NOI18N
+        TLoket.setPreferredSize(new java.awt.Dimension(35, 23));
+        TLoket.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                TLoketKeyPressed(evt);
+            }
+        });
+        panelGlass6.add(TLoket);
+        
         panelGlass6.add(BtnKeluar);
 
         jPanel2.add(panelGlass6, java.awt.BorderLayout.PAGE_END);
@@ -6592,6 +6644,26 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
                 TabRawatMouseClicked(evt);
             }
         });
+        
+        BtnKetPenunjang.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/tasksgroup.png"))); // NOI18N
+        BtnKetPenunjang.setMnemonic('K');
+        BtnKetPenunjang.setText("Review SEP, Resep & Penunjang");
+        BtnKetPenunjang.setToolTipText("");
+        BtnKetPenunjang.setGlassColor(new java.awt.Color(255, 153, 153));
+        BtnKetPenunjang.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        BtnKetPenunjang.setName("BtnKetPenunjang"); // NOI18N
+        BtnKetPenunjang.setPreferredSize(new java.awt.Dimension(250, 26));
+        BtnKetPenunjang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnKetPenunjangActionPerformed(evt);
+            }
+        });
+        BtnKetPenunjang.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BtnKetPenunjangKeyPressed(evt);
+            }
+        });
+        panelGlass7.add(BtnKetPenunjang);
 
         Scroll1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         Scroll1.setToolTipText("Klik data di table, kemudian klik kanan untuk memilih menu yang diinginkan");
@@ -6698,6 +6770,18 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
         TPasienCari.setName("TPasienCari"); // NOI18N
         TPasienCari.setPreferredSize(new java.awt.Dimension(250, 23));
         panelGlass9.add(TPasienCari);
+        
+        Nohp.setEditable(false);
+        Nohp.setHighlighter(null);
+        Nohp.setName("Nohp"); // NOI18N
+        Nohp.setPreferredSize(new java.awt.Dimension(250, 23));
+        Nohp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NohpActionPerformed(evt);
+            }
+        });
+        panelGlass9.add(Nohp);
+        
 
         internalFrame1.add(panelGlass9, java.awt.BorderLayout.PAGE_START);
 
@@ -14551,6 +14635,68 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
         }
     }
     
+     private void BtnKetPenunjangActionPerformed(java.awt.event.ActionEvent evt) {                                                
+        if(tabModekasir.getRowCount()==0){
+            JOptionPane.showMessageDialog(null,"Maaf, table masih kosong...!!!!");
+            TCari.requestFocus();
+        }else if(TNoRw.getText().trim().equals("")){
+            JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu dengan menklik data pada table...!!!");
+            tbKasirRalan.requestFocus();
+        }else{
+            if(tbKasirRalan.getSelectedRow()!= -1){
+                this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                DlgKeteranganPenunjang form=new DlgKeteranganPenunjang(null,false);
+                //                                form.isCek();
+                form.setNoRm(TNoRw.getText());
+                //                form.emptTeks();
+                form.setSize(750,750);
+                //                form.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+                form.setLocationRelativeTo(internalFrame1);
+                form.setVisible(true);
+                this.setCursor(Cursor.getDefaultCursor());
+            }
+        }
+    }                                               
+
+    private void BtnKetPenunjangKeyPressed(java.awt.event.KeyEvent evt) {                                           
+        // TODO add your handling code here:
+    }
+    
+     private void BtnPanggilActionPerformed(java.awt.event.ActionEvent evt) {                                           
+        // TODO add your handling code here:
+         if(tabModekasir.getRowCount()==0){
+            JOptionPane.showMessageDialog(null,"Maaf, table masih kosong...!!!!");
+            TCari.requestFocus();
+        }else if(TNoRw.getText().trim().equals("")){
+            JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu dengan menklik data pada table...!!!");
+            tbKasirRalan.requestFocus();
+        }else if(TLoket.getText().trim().equals("")){
+            JOptionPane.showMessageDialog(null,"Maaf, Silahkan isi nomor Loket terlebih dahulu...!!!");
+            TLoket.requestFocus();
+        }else{
+             if(tbKasirRalan.getSelectedRow()!= -1){
+                Date tanggalSekarang = new Date();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String tanggalFormatted = dateFormat.format(tanggalSekarang);
+                Sequel.queryu("delete from antriadmisi where kd_loket='"+TLoket.getText()+"'");
+                Sequel.queryu("insert into antriadmisi values('"+TLoket.getText()+"','loket','1','"+TNoRMCari.getText()+"','"+ tanggalFormatted +"')");
+            
+             }
+        }
+    }                                          
+
+    private void BtnPanggilKeyPressed(java.awt.event.KeyEvent evt) {                                      
+        // TODO add your handling code here:
+    }                                     
+
+    private void TLoketKeyPressed(java.awt.event.KeyEvent evt) {                                  
+        // TODO add your handling code here:
+    }
+    
+    private void NohpActionPerformed(java.awt.event.ActionEvent evt) {                                     
+        // TODO add your handling code here:
+    }                  
+    
     /**
     * @param args the command line arguments
     */
@@ -14568,6 +14714,13 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    
+    private widget.Button BtnKetPenunjang;
+    private widget.Button BtnPanggil;
+    private widget.TextBox TLoket;
+    private widget.Label jLabel11;
+    private widget.TextBox Nohp;
+    
     private widget.Button BtnAll;
     private widget.Button BtnBatal;
     private widget.Button BtnCari;
@@ -15001,9 +15154,9 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
             pskasir=koneksi.prepareStatement("select reg_periksa.no_reg,reg_periksa.no_rawat,reg_periksa.tgl_registrasi,reg_periksa.jam_reg,"+
                 "reg_periksa.kd_dokter,dokter.nm_dokter,reg_periksa.no_rkm_medis,pasien.nm_pasien,poliklinik.nm_poli,"+
                 "reg_periksa.p_jawab,reg_periksa.almt_pj,reg_periksa.hubunganpj,reg_periksa.biaya_reg,reg_periksa.stts,penjab.png_jawab,concat(reg_periksa.umurdaftar,' ',reg_periksa.sttsumur)as umur, "+
-                "reg_periksa.status_bayar,reg_periksa.status_poli,reg_periksa.kd_pj,reg_periksa.kd_poli,pasien.no_tlp "+
+                "reg_periksa.status_bayar,reg_periksa.status_poli,reg_periksa.kd_pj,reg_periksa.kd_poli,pasien.no_tlp, bridging_sep.no_sep "+
                 "from reg_periksa inner join dokter on reg_periksa.kd_dokter=dokter.kd_dokter inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli inner join penjab on reg_periksa.kd_pj=penjab.kd_pj where  "+
+                "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli inner join penjab on reg_periksa.kd_pj=penjab.kd_pj left join bridging_sep on reg_periksa.no_rawat = bridging_sep.no_rawat  where  "+
                 "reg_periksa.tgl_registrasi between ? and ? and reg_periksa.status_lanjut='Ralan' "+tampildiagnosa+
                 (semua?"":"and reg_periksa.kd_pj like ? and poliklinik.nm_poli like ? and dokter.nm_dokter like ? and reg_periksa.stts like ? and reg_periksa.status_bayar like ? and "+
                 "(reg_periksa.no_reg like ? or reg_periksa.no_rawat like ? or reg_periksa.tgl_registrasi like ? or reg_periksa.kd_dokter like ? or dokter.nm_dokter like ? or reg_periksa.no_rkm_medis like ? or pasien.nm_pasien like ? or poliklinik.nm_poli like ? or "+
@@ -15036,11 +15189,11 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
                 rskasir=pskasir.executeQuery();
                 while(rskasir.next()){
                     tabModekasir.addRow(new String[] {
-                        rskasir.getString(5),rskasir.getString(6),rskasir.getString(7),rskasir.getString(8)+" ("+rskasir.getString("umur")+")",
-                        rskasir.getString(9),rskasir.getString(10),rskasir.getString(11),rskasir.getString(12),Valid.SetAngka(rskasir.getDouble(13)),
+                         rskasir.getString(5),rskasir.getString(6),rskasir.getString(7),rskasir.getString(8)+" ("+rskasir.getString("umur")+")",
+                        rskasir.getString(9),rskasir.getString("no_sep"),rskasir.getString(11),rskasir.getString(12),Valid.SetAngka(rskasir.getDouble(13)),
                         rskasir.getString("png_jawab"),rskasir.getString(14),rskasir.getString("no_rawat"),rskasir.getString("tgl_registrasi"),
                         rskasir.getString("jam_reg"),rskasir.getString(1),rskasir.getString("status_bayar"),rskasir.getString("status_poli"),
-                        rskasir.getString("kd_pj"),rskasir.getString("kd_poli"),rskasir.getString("no_tlp")
+                        rskasir.getString("kd_pj"),rskasir.getString("kd_poli"),rskasir.getString("no_tlp"),rskasir.getString(10)
                     });
                 }                
             } catch(Exception e){
@@ -15132,6 +15285,7 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
             TNoReg.setText(tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(),14).toString());
             TNoRMCari.setText(tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(),2).toString());
             TPasienCari.setText(tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(),3).toString());
+            Nohp.setText(Sequel.cariIsi("select pasien.no_tlp from reg_periksa inner join pasien on reg_periksa.no_rkm_medis = pasien.no_rkm_medis where reg_periksa.no_rawat='"+TNoRw.getText()+"'"));
         }
     }
 

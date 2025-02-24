@@ -2285,6 +2285,7 @@ public final class RMTriaseIGD extends javax.swing.JDialog {
             Sequel.AutoComitTrue();
             if(sukses==true){
                 emptTeks();
+                SimpanPenangananDokter();
             }
         }
 }//GEN-LAST:event_BtnSimpanActionPerformed
@@ -2314,9 +2315,11 @@ public final class RMTriaseIGD extends javax.swing.JDialog {
         }else{
             if(tbTriase.getSelectedRow()!= -1){
                 if(akses.getkode().equals("Admin Utama")){
+                    HapusPenangananDokter();
                     hapus();
                 }else{
                     if(akses.getkode().equals(kodepetugas)){
+                        HapusPenangananDokter();
                         hapus();
                     }else{
                         JOptionPane.showMessageDialog(null,"Hanya bisa dihapus oleh petugas yang bersangkutan..!!");
@@ -4738,10 +4741,44 @@ public final class RMTriaseIGD extends javax.swing.JDialog {
         LCount.setText(""+tabMode.getRowCount());
     }
     
+//    private void emptTeks(){
+//        TNoRw.setText("");
+//        TPasien.setText("");
+//        TNoRM.setText("");
+//        Transportasi.setSelectedIndex(0);
+//        TanggalKunjungan.setDate(new Date());
+//        AlasanKedatangan.setSelectedIndex(0);
+//        KdKasus.setText("");
+//        NmKasus.setText("");
+//        CaraMasuk.setSelectedIndex(0);
+//        KeteranganKedatangan.setText("");
+//        PrimerKeluhanUtama.setText("");
+//        PrimerSuhu.setText("");
+//        PrimerNyeri.setText("");
+//        PrimerTensi.setText("");
+//        PrimerNadi.setText("");
+//        PrimerSaturasi.setText("");
+//        PrimerRespirasi.setText("");
+//        PrimerKubutuhanKusus.setSelectedIndex(0);
+//        PrimerCatatan.setText("");
+//        PrimerTanggalTriase.setDate(new Date());
+//        SekunderAnamnesa.setText("");
+//        SekunderSuhu.setText("");
+//        SekunderNyeri.setText("");
+//        SekunderSaturasi.setText("");
+//        SekunderRespirasi.setText("");
+//        SekunderTensi.setText("");
+//        SekunderNadi.setText("");
+//        SekunderCatatan.setText("");
+//        SekunderTanggalTriase.setDate(new Date());
+//        TabPilihan.setSelectedIndex(0);
+//        TabTriase.setSelectedIndex(0);
+//        Transportasi.requestFocus();
+//        jmlskala1=0;jmlskala2=0;jmlskala3=0;jmlskala4=0;jmlskala5=0;
+//        kodepetugas="";
+//    }
+    
     private void emptTeks(){
-        TNoRw.setText("");
-        TPasien.setText("");
-        TNoRM.setText("");
         Transportasi.setSelectedIndex(0);
         TanggalKunjungan.setDate(new Date());
         AlasanKedatangan.setSelectedIndex(0);
@@ -4758,7 +4795,7 @@ public final class RMTriaseIGD extends javax.swing.JDialog {
         PrimerRespirasi.setText("");
         PrimerKubutuhanKusus.setSelectedIndex(0);
         PrimerCatatan.setText("");
-        PrimerTanggalTriase.setDate(new Date());
+        PrimerTanggalTriase.setDate(new Date());        
         SekunderAnamnesa.setText("");
         SekunderSuhu.setText("");
         SekunderNyeri.setText("");
@@ -4769,10 +4806,30 @@ public final class RMTriaseIGD extends javax.swing.JDialog {
         SekunderCatatan.setText("");
         SekunderTanggalTriase.setDate(new Date());
         TabPilihan.setSelectedIndex(0);
-        TabTriase.setSelectedIndex(0);
         Transportasi.requestFocus();
         jmlskala1=0;jmlskala2=0;jmlskala3=0;jmlskala4=0;jmlskala5=0;
         kodepetugas="";
+        if(Sequel.cariInteger("select count(no_rawat) from pemeriksaan_ralan where no_rawat='"+TNoRw.getText()+"' ")>0){
+            switch (TabTriase.getSelectedIndex()){
+                case 0:
+                    PrimerKeluhanUtama.setText(Sequel.cariIsi("select keluhan from pemeriksaan_ralan where no_rawat=?",TNoRw.getText()));
+                    PrimerSuhu.setText(Sequel.cariIsi("select suhu_tubuh from pemeriksaan_ralan where no_rawat=?",TNoRw.getText())); 
+                    PrimerTensi.setText(Sequel.cariIsi("select tensi from pemeriksaan_ralan where no_rawat=?",TNoRw.getText())); 
+                    PrimerNadi.setText(Sequel.cariIsi("select nadi from pemeriksaan_ralan where no_rawat=?",TNoRw.getText())); 
+                    PrimerRespirasi.setText(Sequel.cariIsi("select respirasi from pemeriksaan_ralan where no_rawat=?",TNoRw.getText()));
+                    break;
+                case 1:
+                    SekunderAnamnesa.setText(Sequel.cariIsi("select keluhan from pemeriksaan_ralan where no_rawat=?",TNoRw.getText()));
+                    SekunderSuhu.setText(Sequel.cariIsi("select suhu_tubuh from pemeriksaan_ralan where no_rawat=?",TNoRw.getText())); 
+                    SekunderTensi.setText(Sequel.cariIsi("select tensi from pemeriksaan_ralan where no_rawat=?",TNoRw.getText())); 
+                    SekunderNadi.setText(Sequel.cariIsi("select nadi from pemeriksaan_ralan where no_rawat=?",TNoRw.getText())); 
+                    SekunderRespirasi.setText(Sequel.cariIsi("select respirasi from pemeriksaan_ralan where no_rawat=?",TNoRw.getText()));
+                    break;
+                default:
+                    break;
+            }
+        }
+        
     }
     
     public void setNoRm(String norwt,String norm,String namapasien) {
@@ -5903,5 +5960,101 @@ public final class RMTriaseIGD extends javax.swing.JDialog {
             TabPilihan.setSelectedIndex(1);
         }
     }
+    
+    private void SimpanPenangananDokter() {
+    // Memulai transaksi manual
+    Sequel.AutoComitFalse();
+    boolean sukses = true;
+
+    // Inisialisasi variabel total
+    double ttljmdokter = 0, ttlkso = 0, ttlpendapatan = 0, ttljasasarana = 0, ttlbhp = 0, ttlmenejemen = 0;
+
+    // Validasi input data
+    if (TNoRw.getText().trim().isEmpty() || TPasien.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Nomor Rawat dan Nama Pasien tidak boleh kosong!");
+        sukses = false;
+    } else {
+        try {
+            // Menggunakan waktu sekarang
+            java.time.LocalDateTime now = java.time.LocalDateTime.now();
+            java.time.format.DateTimeFormatter dateFormatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            java.time.format.DateTimeFormatter timeFormatter = java.time.format.DateTimeFormatter.ofPattern("HH:mm:ss");
+
+            String tanggal = now.format(dateFormatter); // Hanya tanggal
+            String waktu = now.format(timeFormatter);  // Hanya waktu
+
+            // Menyimpan data ke tabel `rawat_jl_dr`
+            boolean isSaved = Sequel.menyimpantf(
+                "rawat_jl_dr",
+                "?,?,?,?,?,?,?,?,?,?,?,'Belum'",
+                "Tindakan",
+                11,
+                new String[]{
+                    TNoRw.getText(), // Nomor Rawat
+                    "RJ00059", // Kode tindakan
+                    PrimerKodePetugas.getText(), // Kode Petugas
+                    tanggal, // Tanggal saat ini
+                    waktu,   // Waktu saat ini
+                    "30000", "0", "0", "0", "0", "30000" // Kolom tambahan kosong
+                }
+            );
+
+            // Jika berhasil disimpan, lakukan logika tambahan
+            if (isSaved) {
+                // Tambahkan logika tambahan jika diperlukan
+//                Sequel.menyimpan("tampjurnal","'"+Beban_Jasa_Medik_Dokter_Tindakan_Ralan+"','Beban Jasa Medik Dokter Tindakan Ralan','"+ttljmdokter+"','0'","debet=debet+'"+(ttljmdokter)+"'","kd_rek='"+Beban_Jasa_Medik_Dokter_Tindakan_Ralan+"'");       
+//                Sequel.menyimpan("tampjurnal","'"+Utang_Jasa_Medik_Dokter_Tindakan_Ralan+"','Utang Jasa Medik Dokter Tindakan Ralan','0','"+ttljmdokter+"'","kredit=kredit+'"+(ttljmdokter)+"'","kd_rek='"+Utang_Jasa_Medik_Dokter_Tindakan_Ralan+"'");                               
+//                 sukses=jur.simpanJurnal(TNoRw.getText(),"U","TINDAKAN RAWAT JALAN PASIEN "+TNoRM.getText()+" "+TPasien.getText()+", DIPOSTING OLEH "+akses.getkode());
+            } else {
+                sukses = false;
+            }
+        } catch (Exception e) {
+            sukses = false;
+            System.err.println("Kesalahan saat menyimpan data: " + e.getMessage());
+        } finally {
+            // Komit atau rollback transaksi berdasarkan status sukses
+            if (sukses) {
+                Sequel.Commit();
+                JOptionPane.showMessageDialog(null, "Data berhasil disimpan.");
+            } else {
+                Sequel.RollBack();
+                JOptionPane.showMessageDialog(null, "Terjadi kesalahan, data tidak disimpan.");
+            }
+            Sequel.AutoComitTrue();
+        }
+    }
+}
+
+private void HapusPenangananDokter() {
+    // Non-aktifkan auto commit untuk memulai transaksi manual
+    Sequel.AutoComitFalse();
+    boolean sukses = true;
+
+    // Validasi input data
+    if (TNoRw.getText().trim().isEmpty() || TPasien.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Nomor Rawat dan Nama Pasien tidak boleh kosong!");
+        sukses = false;
+    } else {
+        try {
+            Sequel.meghapus("rawat_jl_dr","no_rawat",tbTriase.getValueAt(tbTriase.getSelectedRow(),0).toString(),"kd_jenis_prw","RJ00059");
+           
+        } catch (Exception e) {
+            sukses = false;
+            System.err.println("Kesalahan saat menghapus data: " + e.getMessage());
+        } finally {
+            // Akhiri transaksi dengan commit atau rollback berdasarkan status sukses
+            if (sukses) {
+                Sequel.Commit();
+                JOptionPane.showMessageDialog(null, "Data berhasil dihapus.");
+            } else {
+                Sequel.RollBack();
+                JOptionPane.showMessageDialog(null, "Terjadi kesalahan, data tidak dihapus.");
+            }
+
+            // Mengaktifkan kembali auto commit
+            Sequel.AutoComitTrue();
+        }
+    }
+}
     
 }
