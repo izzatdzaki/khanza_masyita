@@ -448,20 +448,31 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             tigapuluh=0;
             satujam=0;
             lebihsatujam=0;
-            ps=koneksi.prepareStatement(
-                "select reg_periksa.no_rkm_medis,pasien.nm_pasien,dokter.nm_dokter,poliklinik.nm_poli," +
-                "reg_periksa.tgl_registrasi,reg_periksa.jam_reg,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat," +
-                "round((TIME_TO_SEC(concat(pemeriksaan_ralan.tgl_perawatan,' ',pemeriksaan_ralan.jam_rawat))-TIME_TO_SEC(concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg)))/60,2) as durasi " +
-                "from reg_periksa inner join dokter inner join pasien inner join poliklinik inner join pemeriksaan_ralan " +
-                "on reg_periksa.kd_dokter=dokter.kd_dokter " +
-                "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis " +
-                "and reg_periksa.kd_poli=poliklinik.kd_poli " +
-                "and reg_periksa.no_rawat=pemeriksaan_ralan.no_rawat "+
-                "where reg_periksa.tgl_registrasi between ? and ? and poliklinik.nm_poli like ? or " +
-                "reg_periksa.tgl_registrasi between ? and ? and dokter.nm_dokter like ? or " +
-                "reg_periksa.tgl_registrasi between ? and ? and reg_periksa.no_rkm_medis like ? or " +
-                "reg_periksa.tgl_registrasi between ? and ? and pasien.nm_pasien like ?  "+
-                "group by pemeriksaan_ralan.no_rawat order by reg_periksa.tgl_registrasi,reg_periksa.jam_reg");
+            ps = koneksi.prepareStatement(
+                                "SELECT \n" +
+                                "    reg_periksa.no_rkm_medis,\n" +
+                                "    pasien.nm_pasien,\n" +
+                                "    dokter.nm_dokter,\n" +
+                                "    poliklinik.nm_poli,\n" +
+                                "    reg_periksa.tgl_registrasi,\n" +
+                                "    reg_periksa.jam_reg,\n" +
+                                "    mutasi_berkas.diterima,\n" +
+                                "    IF(mutasi_berkas.diterima IS NULL, NULL,\n" +
+                                "    ROUND((TIME_TO_SEC(mutasi_berkas.diterima) - TIME_TO_SEC(CONCAT(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg))) / 60, 2)\n" +
+                                "    ) AS durasi \n" +  // <-- tambahkan spasi sebelum FROM
+                                "FROM \n" +
+                                "    reg_periksa\n" +
+                                "INNER JOIN dokter ON reg_periksa.kd_dokter = dokter.kd_dokter\n" +
+                                "INNER JOIN pasien ON reg_periksa.no_rkm_medis = pasien.no_rkm_medis\n" +
+                                "INNER JOIN poliklinik ON reg_periksa.kd_poli = poliklinik.kd_poli\n" +
+                                "INNER JOIN mutasi_berkas ON reg_periksa.no_rawat = mutasi_berkas.no_rawat\n" +
+                                "where reg_periksa.tgl_registrasi between ? and ? and poliklinik.nm_poli like ? or " +
+                                "reg_periksa.tgl_registrasi between ? and ? and dokter.nm_dokter like ? or " +
+                                "reg_periksa.tgl_registrasi between ? and ? and reg_periksa.no_rkm_medis like ? or " +
+                                "reg_periksa.tgl_registrasi between ? and ? and pasien.nm_pasien like ?  "+
+                                "order by reg_periksa.tgl_registrasi,reg_periksa.jam_reg"
+                            );
+
             try {
                 ps.setString(1,Valid.SetTgl(Tgl1.getSelectedItem()+""));
                 ps.setString(2,Valid.SetTgl(Tgl2.getSelectedItem()+""));
@@ -481,17 +492,17 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 while(rs.next()){
                     tabMode.addRow(new Object[]{
                         i,rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),
-                        rs.getString(5)+" "+rs.getString(6),rs.getString(7)+" "+rs.getString(8),rs.getString(9)
+                        rs.getString(5)+" "+rs.getString(6),rs.getString(7),rs.getString(8)
                     });
                     i++;
-                    totaljam=totaljam+rs.getDouble(9);
-                    if(rs.getDouble(9)<=15){
+                    totaljam=totaljam+rs.getDouble(8);
+                    if(rs.getDouble(8)<=15){
                         limabelas++;
-                    }else if((rs.getDouble(9)>15)&&(rs.getDouble(9)<=30)){
+                    }else if((rs.getDouble(8)>15)&&(rs.getDouble(8)<=30)){
                         tigapuluh++;
-                    }else if((rs.getDouble(9)>30)&&(rs.getDouble(9)<=60)){
+                    }else if((rs.getDouble(8)>30)&&(rs.getDouble(8)<=60)){
                         satujam++;
-                    }else if(rs.getDouble(9)>60){
+                    }else if(rs.getDouble(8)>60){
                         lebihsatujam++;
                     }
                 }               
@@ -513,7 +524,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     });
                 }                    
             } catch (Exception e) {
-                System.out.println("laporan.DlgPelayananRalan.tampil() : "+e);
+                System.out.println("laporan.DlgPelayananPoli.tampil() : "+e);
             } finally{
                 if(rs!=null){
                     rs.close();

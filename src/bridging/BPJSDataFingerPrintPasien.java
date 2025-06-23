@@ -43,7 +43,7 @@ public final class BPJSDataFingerPrintPasien extends javax.swing.JDialog {
     private sekuel Sequel=new sekuel();
     private int i=0;
     private ApiBPJS api=new ApiBPJS();
-    private String URL="",link="",utc="";
+    private String URL="",link="",utc="", nama="";
     private HttpHeaders headers ;
     private HttpEntity requestEntity;
     private ObjectMapper mapper = new ObjectMapper();
@@ -61,7 +61,7 @@ public final class BPJSDataFingerPrintPasien extends javax.swing.JDialog {
         this.setLocation(10,2);
         setSize(628,674);
 
-        Object[] row={"No","No.Kartu","No.SEP"};
+        Object[] row={"No","No.Kartu","No.SEP", "Nama Pasien", "Jenis Pelayanan"};
         tabMode=new DefaultTableModel(null,row){
               @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
@@ -71,14 +71,18 @@ public final class BPJSDataFingerPrintPasien extends javax.swing.JDialog {
         tbKamar.setPreferredScrollableViewportSize(new Dimension(500,500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 3; i++) {
+        for (i = 0; i < 4; i++) {
             TableColumn column = tbKamar.getColumnModel().getColumn(i);
             if(i==0){
                 column.setPreferredWidth(40);
             }else if(i==1){
-                column.setPreferredWidth(150);
+                column.setPreferredWidth(100);
             }else if(i==2){
-                column.setPreferredWidth(250);
+                column.setPreferredWidth(200);
+            }else if(i==3){
+                column.setPreferredWidth(150);
+            }else if(i==4){
+                column.setPreferredWidth(150);
             }
         }
         
@@ -292,6 +296,8 @@ public final class BPJSDataFingerPrintPasien extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     public void tampil() {
+        
+       
         try {
             headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -311,8 +317,20 @@ public final class BPJSDataFingerPrintPasien extends javax.swing.JDialog {
                 if(response.isArray()){
                     i=1;
                     for(JsonNode list:response){
+                        String noKartu = list.path("noKartu").asText();
+                        String noSep = list.path("noSEP").asText();
+                        String nama = Sequel.cariIsi("SELECT pasien.nm_pasien FROM pasien WHERE no_peserta='" + noKartu + "'");
+                        String jnsPelayanan = Sequel.cariIsi("SELECT bridging_sep.jnspelayanan FROM bridging_sep WHERE no_sep='" + noSep + "'");
+                        if ("1".equals(jnsPelayanan)) {
+                            jnsPelayanan = "Rawat Inap";
+                        } else if ("2".equals(jnsPelayanan)) {
+                            jnsPelayanan = "Rawat Jalan";
+                        } else {
+                            jnsPelayanan = "Belum Ada No SEP"; // fallback jika nilainya bukan 1 atau 2
+                        }
+
                         tabMode.addRow(new Object[]{
-                            i+"",list.path("noKartu").asText(),list.path("noSEP").asText()
+                            i+"",list.path("noKartu").asText(),list.path("noSEP").asText(), nama, jnsPelayanan
                         });    
                         i++;
                     }

@@ -1755,7 +1755,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
             ttljual=0;
             ps=koneksi.prepareStatement("select penjualan.nota_jual, penjualan.tgl_jual, "+
                     "penjualan.nip,petugas.nama,penjualan.no_rkm_medis,penjualan.nm_pasien, "+
-                    "penjualan.keterangan, penjualan.jns_jual, penjualan.ongkir,bangsal.nm_bangsal,penjualan.status,penjualan.ppn,penjualan.nama_bayar "+
+                    "penjualan.keterangan, penjualan.jns_jual, penjualan.ongkir,bangsal.nm_bangsal,penjualan.status,penjualan.ppn,penjualan.nama_bayar, waktu_penjualan.tgl_jual AS jam_penjualan"+
                     " from penjualan inner join petugas inner join bangsal inner join jenis  "+
                     " inner join detailjual inner join databarang inner join kodesatuan "+
                     " on detailjual.kode_brng=databarang.kode_brng "+
@@ -1763,6 +1763,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                     " and penjualan.kd_bangsal=bangsal.kd_bangsal "+
                     " and penjualan.nota_jual=detailjual.nota_jual "+
                     " and penjualan.nip=petugas.nip and databarang.kdjns=jenis.kdjns "+
+                    " LEFT JOIN waktu_penjualan ON penjualan.nota_jual = waktu_penjualan.nota_jual "+
                     " where "+tanggal+nofak+mem+ptg+sat+bar+statusbayar+datacari+
                     " group by penjualan.nota_jual order by penjualan.tgl_jual,penjualan.nota_jual ");
             try {
@@ -1902,7 +1903,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
             ps=koneksi.prepareStatement("select penjualan.nota_jual, penjualan.tgl_jual, "+
                     "penjualan.nip,petugas.nama,penjualan.ongkir,penjualan.ppn, "+
                     "penjualan.no_rkm_medis,penjualan.nm_pasien,penjualan.nama_bayar, "+
-                    "penjualan.keterangan, penjualan.jns_jual, penjualan.ongkir,bangsal.nm_bangsal,penjualan.status "+
+                    "penjualan.keterangan, penjualan.jns_jual, penjualan.ongkir,bangsal.nm_bangsal,penjualan.status, waktu_penjualan.tgl_jual AS jam_penjualan "+
                     " from penjualan inner join petugas inner join bangsal inner join jenis  "+
                     " inner join detailjual inner join databarang inner join kodesatuan "+
                     " on detailjual.kode_brng=databarang.kode_brng "+
@@ -1910,6 +1911,7 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                     " and penjualan.kd_bangsal=bangsal.kd_bangsal "+
                     " and penjualan.nota_jual=detailjual.nota_jual "+
                     " and penjualan.nip=petugas.nip and databarang.kdjns=jenis.kdjns "+
+                    " left join waktu_penjualan ON penjualan.nota_jual = waktu_penjualan.nota_jual "+
                     " where "+tanggal+nofak+mem+ptg+sat+bar+statusbayar+" and "+
                     "(penjualan.nota_jual like '%"+TCari.getText()+"%' or penjualan.no_rkm_medis like '%"+TCari.getText()+"%' or "+
                     "penjualan.nm_pasien like '%"+TCari.getText()+"%' or  penjualan.nip like '%"+TCari.getText()+"%' or "+
@@ -1933,7 +1935,8 @@ private void ppHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                     htmlContent.append(
                         "<tr class='isi'>"+
                             "<td valign='top' align='center'>"+rs.getString("nota_jual")+"</td>"+
-                            "<td valign='top' align='center'>"+rs.getString("tgl_jual")+"</td>"+
+//                            "<td valign='top' align='center'>"+rs.getString("tgl_jual")+"</td>"+
+                            "<td valign='top' align='center'>" + rs.getString("tgl_jual") + " " + rs.getString("jam_penjualan") + "</td>" +
                             "<td valign='top'>"+rs.getString("nip")+" "+rs.getString("nama")+"</td>"+
                             "<td valign='top'>"+rs.getString("no_rkm_medis")+" "+rs.getString("nm_pasien")+"</td>"+
                             "<td valign='top'>"+rs.getString("jns_jual")+"</td>"+

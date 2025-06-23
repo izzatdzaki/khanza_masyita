@@ -19,6 +19,8 @@ import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
@@ -1576,6 +1578,13 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                         catatan.getText(),Jenisjual.getSelectedItem().toString(),Double.toString(ongkir),Double.toString(besarppnobat),
                         status,kdgudang.getText(),kode_akun_bayar,AkunBayar.getSelectedItem().toString()}
                    )==true){
+                        
+                        String tanggalSekarang = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+                        Sequel.menyimpantf2("waktu_penjualan","?,?,?,?,?,?,?,?,?,?,?,?,?","No.Nota",13,new String[]{
+                        NoNota.getText(),tanggalSekarang,kdptg.getText(),kdmem.getText(),nmmem.getText(),
+                        catatan.getText(),Jenisjual.getSelectedItem().toString(),Double.toString(ongkir),Double.toString(besarppnobat),
+                        status,kdgudang.getText(),kode_akun_bayar,AkunBayar.getSelectedItem().toString()} );
+                        
                         simpan();
                 }else{
                     autoNomor();

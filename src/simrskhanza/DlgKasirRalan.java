@@ -212,6 +212,7 @@ import surat.SuratPulangAtasPermintaanSendiri;
 import surat.SuratSakit;
 import surat.SuratSakitPihak2;
 import surat.SuratTidakHamil;
+import wa.WhatsappKirimFonnte;
 
 /**
  *
@@ -1069,6 +1070,7 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
 
         Nohp = new widget.TextBox();
         BtnKetPenunjang = new widget.Button();
+        BtnKirimWA = new widget.Button();
         
         
         BtnPanggil = new widget.Button();
@@ -6664,6 +6666,25 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
             }
         });
         panelGlass7.add(BtnKetPenunjang);
+        
+        BtnKirimWA.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/wa.png"))); // NOI18N
+        BtnKirimWA.setMnemonic('M');
+        BtnKirimWA.setText("KIRIM PESAN WA");
+        BtnKirimWA.setToolTipText("Ctrl+W");
+        BtnKirimWA.setGlassColor(new java.awt.Color(153, 255, 204));
+        BtnKirimWA.setName("BtnKirimWA"); // NOI18N
+        BtnKirimWA.setPreferredSize(new java.awt.Dimension(200, 30));
+        BtnKirimWA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnKirimWAActionPerformed(evt);
+            }
+        });
+        BtnKirimWA.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BtnKirimWAKeyPressed(evt);
+            }
+        });
+        panelGlass6.add(BtnKirimWA);
 
         Scroll1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         Scroll1.setToolTipText("Klik data di table, kemudian klik kanan untuk memilih menu yang diinginkan");
@@ -14695,7 +14716,49 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
     
     private void NohpActionPerformed(java.awt.event.ActionEvent evt) {                                     
         // TODO add your handling code here:
-    }                  
+    }  
+    
+    private void BtnKirimWAActionPerformed(java.awt.event.ActionEvent evt) {                                           
+        if (TPasienCari.getText().trim().equals("") && TPasienCari.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Maaf, Silahkan anda pilih dulu data pasien...!!!");
+            TCari.requestFocus();
+        } else {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            WhatsappKirimFonnte kirim = new WhatsappKirimFonnte(null, false);
+            kirim.setNoRm(
+                TNoRMCari.getText(), 
+                TNoReg.getText(), 
+                tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(), 4).toString(), 
+                tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(), 1).toString(), 
+                DTPCari1.getDate()
+            );
+            kirim.setSize(720, 330);
+            kirim.setLocationRelativeTo(internalFrame1);
+            kirim.setVisible(true);
+            this.setCursor(Cursor.getDefaultCursor());
+        }
+    }                                          
+
+    private void BtnKirimWAKeyPressed(java.awt.event.KeyEvent evt) {                                      
+     if (TPasienCari.getText().trim().equals("") && TPasienCari.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Maaf, Silahkan anda pilih dulu data pasien...!!!");
+            TCari.requestFocus();
+        } else {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            WhatsappKirimFonnte kirim = new WhatsappKirimFonnte(null, false);
+            kirim.setNoRm(
+                TNoRMCari.getText(), 
+                TNoReg.getText(), 
+                tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(), 4).toString(), 
+                tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(), 1).toString(), 
+                DTPCari1.getDate()
+            );
+            kirim.setSize(720, 330);
+            kirim.setLocationRelativeTo(internalFrame1);
+            kirim.setVisible(true);
+            this.setCursor(Cursor.getDefaultCursor());
+        }
+    }  
     
     /**
     * @param args the command line arguments
@@ -14720,6 +14783,7 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
     private widget.TextBox TLoket;
     private widget.Label jLabel11;
     private widget.TextBox Nohp;
+    private widget.Button BtnKirimWA;
     
     private widget.Button BtnAll;
     private widget.Button BtnBatal;
@@ -15285,7 +15349,7 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
             TNoReg.setText(tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(),14).toString());
             TNoRMCari.setText(tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(),2).toString());
             TPasienCari.setText(tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(),3).toString());
-            Nohp.setText(Sequel.cariIsi("select pasien.no_tlp from reg_periksa inner join pasien on reg_periksa.no_rkm_medis = pasien.no_rkm_medis where reg_periksa.no_rawat='"+TNoRw.getText()+"'"));
+            Nohp.setText(Sequel.cariIsi("select pasien.no_tlp from pasien where pasien.no_rkm_medis='"+TNoRMCari.getText()+"'"));
         }
     }
 

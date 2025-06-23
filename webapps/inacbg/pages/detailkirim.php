@@ -392,6 +392,42 @@
                 </td>
             </tr>
             <?php 
+
+
+$prosedur_non_bedah = 
+    getOne("SELECT IFNULL(SUM(billing.totalbiaya), 0) 
+            FROM billing 
+            WHERE billing.no_rawat = '".$norawat."' 
+              AND billing.status = 'Ralan Dokter Paramedis' 
+              AND billing.nm_perawatan NOT LIKE '%terapi%'") +
+
+    getOne("SELECT IFNULL(SUM(billing.totalbiaya), 0) 
+            FROM billing 
+            WHERE billing.no_rawat = '".$norawat."' 
+              AND billing.status = 'Ranap Dokter Paramedis' 
+              AND billing.nm_perawatan NOT LIKE '%terapi%'") +
+
+    getOne("SELECT IFNULL(SUM(billing.totalbiaya), 0) 
+            FROM billing 
+            WHERE billing.no_rawat = '".$norawat."' 
+              AND billing.status = 'Obat'") +
+
+    getOne("SELECT IFNULL(SUM(billing.totalbiaya), 0) 
+            FROM billing 
+            WHERE billing.no_rawat = '".$norawat."' 
+              AND billing.status = 'Retur Obat'") +
+
+    getOne("SELECT IFNULL(SUM(billing.totalbiaya), 0) 
+            FROM billing 
+            WHERE billing.no_rawat = '".$norawat."' 
+              AND billing.status = 'Resep Pulang'") -
+
+    $obat_kronis - $obat_kemoterapi;
+
+if ($prosedur_non_bedah == "") {
+    $prosedur_non_bedah = "0";
+}
+
                 $prosedur_non_bedah=getOne("select if(sum(billing.totalbiaya)='','0',sum(billing.totalbiaya)) from billing where billing.no_rawat='".$norawat."' and billing.status='Ralan Dokter Paramedis' and billing.nm_perawatan not like '%terapi%'")+
                                     getOne("select if(sum(billing.totalbiaya)='','0',sum(billing.totalbiaya)) from billing where billing.no_rawat='".$norawat."' and billing.status='Ranap Dokter Paramedis' and billing.nm_perawatan not like '%terapi%'");
                 if($prosedur_non_bedah==""){

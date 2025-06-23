@@ -95,7 +95,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
     private BPJSCekReferensiKecamatan kecamatan=new BPJSCekReferensiKecamatan(null,false);
     private BPJSCekRiwayatRujukanTerakhir rujukanterakhir=new BPJSCekRiwayatRujukanTerakhir(null,false);
     private String prb="",no_peserta="",link="",ADDANTRIANAPIMOBILEJKN="no",requestJson,URL="",query="",utc="",user="",kddokter="",tglkkl="0000-00-00",penunjang="",kodedokterreg="",kodepolireg="",
-            jammulai="",jamselesai="",datajam="",jeniskunjungan="",hari="",nomorreg="",respon="200",statuslanjut="",FileName = "",kodeberkas="";
+            jammulai="",jamselesai="",datajam="",jeniskunjungan="",hari="",nomorreg="",respon="200", FileName = "",kodeberkas="";
     private HttpHeaders headers;
     private HttpEntity requestEntity;
     private ObjectMapper mapper = new ObjectMapper();
@@ -967,8 +967,6 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         ppSepRujukSama = new javax.swing.JMenuItem();
         ppSepRujukBeda = new javax.swing.JMenuItem();
         ppCekSEPApotekBPJS = new javax.swing.JMenuItem();
-        ppTampilSEPRawatJalan = new javax.swing.JMenuItem();
-        ppTampilSEPRawatInap = new javax.swing.JMenuItem();
         UploadSEP = new javax.swing.JMenuItem();
         WindowUpdatePulang = new javax.swing.JDialog();
         internalFrame5 = new widget.InternalFrame();
@@ -1025,7 +1023,6 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         jLabel35 = new widget.Label();
         NoSEP = new widget.TextBox();
         BtnCari1 = new widget.Button();
-        NIK = new widget.TextBox();
         internalFrame1 = new widget.InternalFrame();
         TabRawat = new javax.swing.JTabbedPane();
         internalFrame2 = new widget.InternalFrame();
@@ -1134,10 +1131,14 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         btnSuplesi = new widget.Button();
         jLabel55 = new widget.Label();
         NoLP = new widget.TextBox();
+        NIK = new widget.TextBox();
+        jLabel56 = new widget.Label();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea2 = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jLabel57 = new widget.Label();
+        StatusFinger = new widget.TextBox();
         internalFrame4 = new widget.InternalFrame();
         Scroll = new widget.ScrollPane();
         tbDataSEP = new widget.Table();
@@ -1541,43 +1542,11 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         });
         Popup.add(ppCekSEPApotekBPJS);
 
-        ppTampilSEPRawatJalan.setBackground(new java.awt.Color(255, 255, 254));
-        ppTampilSEPRawatJalan.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        ppTampilSEPRawatJalan.setForeground(new java.awt.Color(50, 50, 50));
-        ppTampilSEPRawatJalan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
-        ppTampilSEPRawatJalan.setText("Tampilkan SEP Rawat Jalan");
-        ppTampilSEPRawatJalan.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        ppTampilSEPRawatJalan.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        ppTampilSEPRawatJalan.setName("ppTampilSEPRawatJalan"); // NOI18N
-        ppTampilSEPRawatJalan.setPreferredSize(new java.awt.Dimension(300, 25));
-        ppTampilSEPRawatJalan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ppTampilSEPRawatJalanBtnPrintActionPerformed(evt);
-            }
-        });
-        Popup.add(ppTampilSEPRawatJalan);
-
-        ppTampilSEPRawatInap.setBackground(new java.awt.Color(255, 255, 254));
-        ppTampilSEPRawatInap.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        ppTampilSEPRawatInap.setForeground(new java.awt.Color(50, 50, 50));
-        ppTampilSEPRawatInap.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
-        ppTampilSEPRawatInap.setText("Tampilkan SEP Rawat Inap");
-        ppTampilSEPRawatInap.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        ppTampilSEPRawatInap.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        ppTampilSEPRawatInap.setName("ppTampilSEPRawatInap"); // NOI18N
-        ppTampilSEPRawatInap.setPreferredSize(new java.awt.Dimension(300, 25));
-        ppTampilSEPRawatInap.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ppTampilSEPRawatInapBtnPrintActionPerformed(evt);
-            }
-        });
-        Popup.add(ppTampilSEPRawatInap);
-
         UploadSEP.setBackground(new java.awt.Color(255, 255, 254));
         UploadSEP.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
         UploadSEP.setForeground(new java.awt.Color(50, 50, 50));
         UploadSEP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
-        UploadSEP.setText("Upload SEP ke Berkas Digital");
+        UploadSEP.setText("Upload SEP RAJAL ke Berkas Digital");
         UploadSEP.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         UploadSEP.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         UploadSEP.setName("UploadSEP"); // NOI18N
@@ -1629,7 +1598,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         internalFrame5.add(jLabel26);
         jLabel26.setBounds(6, 32, 70, 23);
 
-        TanggalPulang.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "30-12-2024 21:01:25" }));
+        TanggalPulang.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "22-06-2025 01:41:14" }));
         TanggalPulang.setDisplayFormat("dd-MM-yyyy HH:mm:ss");
         TanggalPulang.setName("TanggalPulang"); // NOI18N
         TanggalPulang.setOpaque(false);
@@ -1675,7 +1644,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         internalFrame5.add(jLabel48);
         jLabel48.setBounds(291, 62, 120, 23);
 
-        TanggalKematian.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "30-12-2024" }));
+        TanggalKematian.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "22-06-2025" }));
         TanggalKematian.setDisplayFormat("dd-MM-yyyy");
         TanggalKematian.setEnabled(false);
         TanggalKematian.setName("TanggalKematian"); // NOI18N
@@ -1743,7 +1712,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         jLabel30.setBounds(0, 25, 102, 23);
 
         TanggalRujukKeluar.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalRujukKeluar.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "30-12-2024" }));
+        TanggalRujukKeluar.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "22-06-2025" }));
         TanggalRujukKeluar.setDisplayFormat("dd-MM-yyyy");
         TanggalRujukKeluar.setName("TanggalRujukKeluar"); // NOI18N
         TanggalRujukKeluar.setOpaque(false);
@@ -1926,7 +1895,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         jLabel50.setBounds(638, 55, 80, 23);
 
         TanggalKunjungRujukan.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalKunjungRujukan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "30-12-2024" }));
+        TanggalKunjungRujukan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "22-06-2025" }));
         TanggalKunjungRujukan.setDisplayFormat("dd-MM-yyyy");
         TanggalKunjungRujukan.setName("TanggalKunjungRujukan"); // NOI18N
         TanggalKunjungRujukan.setOpaque(false);
@@ -2104,14 +2073,6 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
 
         WindowCariSEP.getContentPane().add(internalFrame7, java.awt.BorderLayout.CENTER);
 
-        NIK.setHighlighter(null);
-        NIK.setName("NIK"); // NOI18N
-        NIK.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                NIKKeyPressed(evt);
-            }
-        });
-
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
         setResizable(false);
@@ -2176,10 +2137,10 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         FormInput.add(TNoRM);
         TNoRM.setBounds(247, 12, 110, 23);
 
-        jLabel5.setText("No.Kartu :");
+        jLabel5.setText("NIK :");
         jLabel5.setName("jLabel5"); // NOI18N
         FormInput.add(jLabel5);
-        jLabel5.setBounds(0, 72, 90, 23);
+        jLabel5.setBounds(0, 460, 90, 23);
 
         NoKartu.setEditable(false);
         NoKartu.setBackground(new java.awt.Color(245, 250, 240));
@@ -2196,7 +2157,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         jLabel20.setBounds(187, 102, 65, 23);
 
         TanggalSEP.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalSEP.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "30-12-2024" }));
+        TanggalSEP.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "22-06-2025" }));
         TanggalSEP.setDisplayFormat("dd-MM-yyyy");
         TanggalSEP.setName("TanggalSEP"); // NOI18N
         TanggalSEP.setOpaque(false);
@@ -2216,7 +2177,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         jLabel22.setBounds(0, 102, 90, 23);
 
         TanggalRujuk.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalRujuk.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "30-12-2024" }));
+        TanggalRujuk.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "22-06-2025" }));
         TanggalRujuk.setDisplayFormat("dd-MM-yyyy");
         TanggalRujuk.setName("TanggalRujuk"); // NOI18N
         TanggalRujuk.setOpaque(false);
@@ -2384,9 +2345,9 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
 
         Catatan.setHighlighter(null);
         Catatan.setName("Catatan"); // NOI18N
-        Catatan.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                CatatanKeyPressed(evt);
+        Catatan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CatatanActionPerformed(evt);
             }
         });
         FormInput.add(Catatan);
@@ -2577,7 +2538,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         jLabel38.setBounds(594, 132, 40, 23);
 
         TanggalKKL.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalKKL.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "30-12-2024" }));
+        TanggalKKL.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "22-06-2025" }));
         TanggalKKL.setDisplayFormat("dd-MM-yyyy");
         TanggalKKL.setEnabled(false);
         TanggalKKL.setName("TanggalKKL"); // NOI18N
@@ -2885,6 +2846,11 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                 TujuanKunjunganItemStateChanged(evt);
             }
         });
+        TujuanKunjungan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TujuanKunjunganActionPerformed(evt);
+            }
+        });
         TujuanKunjungan.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 TujuanKunjunganKeyPressed(evt);
@@ -3026,6 +2992,21 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         FormInput.add(NoLP);
         NoLP.setBounds(632, 162, 95, 23);
 
+        NIK.setHighlighter(null);
+        NIK.setName("NIK"); // NOI18N
+        NIK.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                NIKKeyPressed(evt);
+            }
+        });
+        FormInput.add(NIK);
+        NIK.setBounds(93, 460, 257, 24);
+
+        jLabel56.setText("No.Kartu :");
+        jLabel56.setName("jLabel56"); // NOI18N
+        FormInput.add(jLabel56);
+        jLabel56.setBounds(0, 72, 90, 23);
+
         jScrollPane3.setName("jScrollPane3"); // NOI18N
 
         jTextArea2.setColumns(20);
@@ -3042,12 +3023,25 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
-        jTextArea1.setText("4. Pasien Rawat Inap\n-Jenis Pelayanan = Rawat Inap\n-Asal Rujukan RS (Apabila dari IGD)\n-Asal Rujukan FKTP (Apabila dari POLI)\n-Masukan Nomor SPRI\n-Tujuan Kunjungan = Normal\n-PPK Rujukan = RST REKSODIWIRYO\n\n5. Pasien Post Ranap\n-Poli Tujuan = Sesuai Ranap\n-No Rujukan = SEP Ranap\n- Tanggal Rujukan = Tanggal SEP Ranap dibuat\n-Inputkan Sukon (SKDP)\n-Tujuan Kontrol = Normal\n\n6. Pasien IGD\n-Poli Tujuan = IGD\n- DOkter tujukan masukan DPJP\n-Tujuan Kunjungan = Normal");
+        jTextArea1.setText("4. Pasien Rawat Inap\n-Jenis Pelayanan = Rawat Inap\n-Asal Rujukan RS (Apabila dari IGD)\n-Asal Rujukan FKTP (Apabila dari POLI)\n-Masukan Nomor SPRI\n-Tujuan Kunjungan = Normal\n-PPK Rujukan = RSIA MASYITA\n\n5. Pasien Post Ranap\n-Poli Tujuan = Sesuai Ranap\n-No Rujukan = SEP Ranap\n- Tanggal Rujukan = Tanggal SEP Ranap dibuat\n-Inputkan Sukon (SKDP)\n-Tujuan Kontrol = Normal\n\n6. Pasien IGD\n-Poli Tujuan = IGD\n- DOkter tujukan masukan DPJP\n-Tujuan Kunjungan = Normal");
         jTextArea1.setName("jTextArea1"); // NOI18N
         jScrollPane2.setViewportView(jTextArea1);
 
         FormInput.add(jScrollPane2);
         jScrollPane2.setBounds(1070, 140, 310, 320);
+
+        jLabel57.setText("Status Finger");
+        jLabel57.setName("jLabel57"); // NOI18N
+        jLabel57.setPreferredSize(new java.awt.Dimension(55, 23));
+        FormInput.add(jLabel57);
+        jLabel57.setBounds(360, 460, 100, 23);
+
+        StatusFinger.setEditable(false);
+        StatusFinger.setBackground(new java.awt.Color(245, 250, 240));
+        StatusFinger.setHighlighter(null);
+        StatusFinger.setName("StatusFinger"); // NOI18N
+        FormInput.add(StatusFinger);
+        StatusFinger.setBounds(470, 460, 220, 23);
 
         Scroll1.setViewportView(FormInput);
 
@@ -3093,7 +3087,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         panelGlass9.add(jLabel19);
 
         DTPCari1.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "30-12-2024" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "22-06-2025" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -3107,7 +3101,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         panelGlass9.add(jLabel21);
 
         DTPCari2.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "30-12-2024" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "22-06-2025" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -3198,7 +3192,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         panelGlass10.add(jLabel51);
 
         DTPCariInternal.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCariInternal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "30-12-2024" }));
+        DTPCariInternal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "22-06-2025" }));
         DTPCariInternal.setDisplayFormat("dd-MM-yyyy");
         DTPCariInternal.setName("DTPCariInternal"); // NOI18N
         DTPCariInternal.setOpaque(false);
@@ -3212,7 +3206,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         panelGlass10.add(jLabel52);
 
         DTPCariInternal2.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCariInternal2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "30-12-2024" }));
+        DTPCariInternal2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "22-06-2025" }));
         DTPCariInternal2.setDisplayFormat("dd-MM-yyyy");
         DTPCariInternal2.setName("DTPCariInternal2"); // NOI18N
         DTPCariInternal2.setOpaque(false);
@@ -3745,6 +3739,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
 }//GEN-LAST:event_TCariKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
+        query="";
         tampil();
 }//GEN-LAST:event_BtnCariActionPerformed
 
@@ -3758,7 +3753,6 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
         query="";
-        statuslanjut="";
         if(TabRawat.getSelectedIndex()==1){
             TCari.setText("");
             tampil();
@@ -3861,10 +3855,6 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         Valid.pindah(evt,btnDiagnosa,btnDPJP);
     }//GEN-LAST:event_btnPoliKeyPressed
 
-    private void CatatanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CatatanKeyPressed
-        Valid.pindah(evt,COB,Katarak);
-    }//GEN-LAST:event_CatatanKeyPressed
-
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         if(akses.getform().equals("DlgReg")||akses.getform().equals("DlgIGD")||akses.getform().equals("DlgKasirRalan")||akses.getform().equals("DlgKamarInap")){
             prb="";
@@ -3874,13 +3864,14 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(null,"Pasien tidak mempunyai kepesertaan BPJS");
                 dispose();
             }else{
+                StatusFingerPasienAktif(no_peserta); 
                 cekViaBPJSKartu.tampil(no_peserta);
                 if(cekViaBPJSKartu.informasi.equals("OK")){
                     if(cekViaBPJSKartu.statusPesertaketerangan.equals("AKTIF")){
                         TPasien.setText(cekViaBPJSKartu.nama);
                         TglLahir.setText(cekViaBPJSKartu.tglLahir);
                         NIK.setText(cekViaBPJSKartu.nik);
-                        if(NIK.getText().equals("")){
+                        if(NIK.getText().equals("null")||NIK.getText().equals("")||NIK.getText().equals(null)){
                             NIK.setText(Sequel.cariIsi("select pasien.no_ktp from pasien where pasien.no_rkm_medis=?",TNoRM.getText()));
                         }
                         JK.setText(cekViaBPJSKartu.sex);
@@ -3897,6 +3888,9 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                             Kelas.setSelectedIndex(2);
                         }
                         NoTelp.setText(cekViaBPJSKartu.mrnoTelepon);
+                         if(NoTelp.getText().equals("null")||NoTelp.getText().equals("")||NoTelp.getText().equals(null)){
+                            NoTelp.setText(Sequel.cariIsi("select pasien.no_tlp from pasien where pasien.no_rkm_medis=?",TNoRM.getText()));
+                        }
                         prb=cekViaBPJSKartu.informasiprolanisPRB.replaceAll("null","");
                         NoRujukan.requestFocus();                                               
                     }else{
@@ -5635,6 +5629,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
     }//GEN-LAST:event_TCariInternalKeyPressed
 
     private void BtnCariInternalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariInternalActionPerformed
+        query="";
         tampilInternal();
     }//GEN-LAST:event_BtnCariInternalActionPerformed
 
@@ -5748,25 +5743,13 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         Valid.pindah(evt,Keterangan,Suplesi);
     }//GEN-LAST:event_NoLPKeyPressed
 
-    private void ppTampilSEPRawatJalanBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppTampilSEPRawatJalanBtnPrintActionPerformed
-        if(TabRawat.getSelectedIndex()==1){
-            statuslanjut=" and bridging_sep.jnspelayanan='2' ";
-            tampil();
-        }else if(TabRawat.getSelectedIndex()==2){
-            statuslanjut=" and bridging_sep_internal.jnspelayanan='2' ";
-            tampilInternal();
-        }
-    }//GEN-LAST:event_ppTampilSEPRawatJalanBtnPrintActionPerformed
+    private void TujuanKunjunganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TujuanKunjunganActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TujuanKunjunganActionPerformed
 
-    private void ppTampilSEPRawatInapBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppTampilSEPRawatInapBtnPrintActionPerformed
-        if(TabRawat.getSelectedIndex()==1){
-            statuslanjut=" and bridging_sep.jnspelayanan='1' ";
-            tampil();
-        }else if(TabRawat.getSelectedIndex()==2){
-            statuslanjut=" and bridging_sep_internal.jnspelayanan='1' ";
-            tampilInternal();
-        }
-    }//GEN-LAST:event_ppTampilSEPRawatInapBtnPrintActionPerformed
+    private void CatatanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CatatanActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CatatanActionPerformed
 
     private void UploadSEPBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UploadSEPBtnPrintActionPerformed
         FileName = "SEP_" + tbDataSEP.getValueAt(tbDataSEP.getSelectedRow(), 0).toString().trim() + "_" + tbDataSEP.getValueAt(tbDataSEP.getSelectedRow(), 1).toString().replaceAll("/", "") + "_" + tbDataSEP.getValueAt(tbDataSEP.getSelectedRow(), 2).toString();
@@ -5939,6 +5922,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
     private widget.ScrollPane Scroll1;
     private widget.ScrollPane Scroll2;
     private widget.TextBox Status;
+    private widget.TextBox StatusFinger;
     private widget.ComboBox StatusPulang;
     private widget.ComboBox Suplesi;
     private widget.TextBox TCari;
@@ -6032,6 +6016,8 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
     private widget.Label jLabel53;
     private widget.Label jLabel54;
     private widget.Label jLabel55;
+    private widget.Label jLabel56;
+    private widget.Label jLabel57;
     private widget.Label jLabel6;
     private widget.Label jLabel7;
     private widget.Label jLabel8;
@@ -6071,8 +6057,6 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
     private javax.swing.JMenuItem ppSuplesiJasaRaharja;
     private javax.swing.JMenuItem ppSuratKontrol;
     private javax.swing.JMenuItem ppSuratPRI;
-    private javax.swing.JMenuItem ppTampilSEPRawatInap;
-    private javax.swing.JMenuItem ppTampilSEPRawatJalan;
     private widget.Table tbDataSEP;
     private widget.Table tbDataSEPInternal;
     // End of variables declaration//GEN-END:variables
@@ -6080,6 +6064,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
     public void tampil() {        
         Valid.tabelKosong(tabMode);
         try{
+            
             ps=koneksi.prepareStatement(
                     "select bridging_sep.no_sep, bridging_sep.no_rawat,bridging_sep.nomr,bridging_sep.nama_pasien,bridging_sep.tglsep,bridging_sep.tglrujukan,"+
                     "bridging_sep.no_rujukan,bridging_sep.kdppkrujukan,bridging_sep.nmppkrujukan,bridging_sep.kdppkpelayanan,bridging_sep.nmppkpelayanan,"+
@@ -6090,7 +6075,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                     "bridging_sep.notelep,bridging_sep.katarak,bridging_sep.tglkkl,bridging_sep.keterangankkl,bridging_sep.suplesi,bridging_sep.no_sep_suplesi,bridging_sep.kdprop,"+
                     "bridging_sep.nmprop,bridging_sep.kdkab,bridging_sep.nmkab,bridging_sep.kdkec,bridging_sep.nmkec,bridging_sep.noskdp,bridging_sep.kddpjp,bridging_sep.nmdpdjp,"+
                     "bridging_sep.tujuankunjungan,bridging_sep.flagprosedur,bridging_sep.penunjang,bridging_sep.asesmenpelayanan,bridging_sep.kddpjplayanan,bridging_sep.nmdpjplayanan "+
-                    "from bridging_sep where bridging_sep.tglsep between ? and ? "+query+statuslanjut+(TCari.getText().trim().equals("")?"":" and (bridging_sep.no_sep like ? or "+
+                    "from bridging_sep where bridging_sep.tglsep between ? and ? "+query+(TCari.getText().trim().equals("")?"":" and (bridging_sep.no_sep like ? or "+
                     "bridging_sep.nomr like ? or bridging_sep.nama_pasien like ? or bridging_sep.nmppkrujukan like ? or bridging_sep.diagawal like ? or "+
                     "bridging_sep.nmdiagnosaawal like ? or bridging_sep.no_rawat like ? or bridging_sep.no_kartu like ? or bridging_sep.nmprop like ? or "+
                     "bridging_sep.nmkab like ? or bridging_sep.nmkec like ? or bridging_sep.nmdpdjp like ? or bridging_sep.asal_rujukan like ? or bridging_sep.notelep like ? "+
@@ -6115,6 +6100,8 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                     ps.setString(16,"%"+TCari.getText().trim()+"%");
                     ps.setString(17,"%"+TCari.getText().trim()+"%");
                 }
+                
+               
                     
                 rs=ps.executeQuery();
                 while(rs.next()){
@@ -6208,7 +6195,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                     "bridging_sep_internal.notelep,bridging_sep_internal.katarak,bridging_sep_internal.tglkkl,bridging_sep_internal.keterangankkl,bridging_sep_internal.suplesi,bridging_sep_internal.no_sep_suplesi,bridging_sep_internal.kdprop,"+
                     "bridging_sep_internal.nmprop,bridging_sep_internal.kdkab,bridging_sep_internal.nmkab,bridging_sep_internal.kdkec,bridging_sep_internal.nmkec,bridging_sep_internal.noskdp,bridging_sep_internal.kddpjp,bridging_sep_internal.nmdpdjp,"+
                     "bridging_sep_internal.tujuankunjungan,bridging_sep_internal.flagprosedur,bridging_sep_internal.penunjang,bridging_sep_internal.asesmenpelayanan,bridging_sep_internal.kddpjplayanan,bridging_sep_internal.nmdpjplayanan "+
-                    "from bridging_sep_internal where bridging_sep_internal.tglsep between ? and ? "+query+statuslanjut+(TCari.getText().trim().equals("")?"":" and (bridging_sep_internal.no_sep like ? or "+
+                    "from bridging_sep_internal where bridging_sep_internal.tglsep between ? and ? "+query+(TCari.getText().trim().equals("")?"":" and (bridging_sep_internal.no_sep like ? or "+
                     "bridging_sep_internal.nomr like ? or bridging_sep_internal.nama_pasien like ? or bridging_sep_internal.nmppkrujukan like ? or bridging_sep_internal.diagawal like ? or "+
                     "bridging_sep_internal.nmdiagnosaawal like ? or bridging_sep_internal.no_rawat like ? or bridging_sep_internal.no_kartu like ? or bridging_sep_internal.nmprop like ? or "+
                     "bridging_sep_internal.nmkab like ? or bridging_sep_internal.nmkec like ? or bridging_sep_internal.nmdpdjp like ? or bridging_sep_internal.asal_rujukan like ? or bridging_sep_internal.notelep like ? "+
@@ -6938,7 +6925,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                             jammulai=rs.getString("jam_mulai");
                             jamselesai=rs.getString("jam_selesai");
                             kuota=rs.getInt("kuota");
-                            datajam=Sequel.cariIsi("select DATE_ADD(concat('"+Valid.SetTgl(TanggalSEP.getSelectedItem()+"")+"',' ','"+jammulai+"'),INTERVAL "+(Integer.parseInt(nomorreg)*5)+" MINUTE) ");
+                            datajam=Sequel.cariIsi("select DATE_ADD(concat('"+Valid.SetTgl(TanggalSEP.getSelectedItem()+"")+"',' ','"+jammulai+"'),INTERVAL "+(Integer.parseInt(nomorreg)*10)+" MINUTE) ");
                             parsedDate = dateFormat.parse(datajam);
                         }else{
                             statusantrean=false;
@@ -7067,6 +7054,52 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         return statusantrean;
     }
     
+    public void StatusFingerPasienAktif(String NoKartu) {
+        try {
+            headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+            headers.add("X-Cons-ID", koneksiDB.CONSIDAPIBPJS());
+            utc = String.valueOf(api.GetUTCdatetimeAsString());
+            headers.add("X-Timestamp", utc);
+            headers.add("X-Signature", api.getHmac(utc));
+            headers.add("user_key", koneksiDB.USERKEYAPIBPJS());
+
+            requestEntity = new HttpEntity(headers);
+            URL = link + "/SEP/FingerPrint/List/Peserta/TglPelayanan/" + Valid.SetTgl(TanggalSEP.getSelectedItem() + "");
+            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET, requestEntity, String.class).getBody());
+
+            nameNode = root.path("metaData");
+            if (nameNode.path("code").asText().equals("200")) {
+                JsonNode responseArray = mapper.readTree(api.Decrypt(root.path("response").asText(), utc)).path("list");
+
+                boolean sudahFinger = false;
+                if (responseArray.isArray()) {
+                    for (JsonNode list : responseArray) {
+                        String noKartu = list.path("noKartu").asText();
+                        if (noKartu.equals(NoKartu)) {
+                            sudahFinger = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (sudahFinger) {
+                    StatusFinger.setText("Sudah Finger");
+                } else {
+                    StatusFinger.setText("Belum Finger");
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, nameNode.path("message").asText());
+            }
+        } catch (Exception ex) {
+            System.out.println("Notifikasi StatusFinger : " + ex);
+            if (ex.toString().contains("UnknownHostException")) {
+                JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
+            }
+        }
+    }
+    
     private void UploadPDF(String FileName, String docpath) {
         try {
             File file = new File("tmpPDF/" + FileName + ".pdf");
@@ -7081,7 +7114,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
 
             // Menyimpan ke database
             boolean uploadSuccess = false;
-            kodeberkas = Sequel.cariIsi("SELECT kode FROM master_berkas_digital WHERE nama LIKE '%SEP%'");
+            kodeberkas = Sequel.cariIsi("SELECT kode FROM master_berkas_digital WHERE nama LIKE '%06 SEP RAJAL%'");
             if (Sequel.cariInteger("SELECT COUNT(no_rawat) AS jumlah FROM berkas_digital_perawatan WHERE lokasi_file='pages/upload/" + FileName + ".pdf'") > 0) {
                 uploadSuccess = Sequel.mengedittf("berkas_digital_perawatan", "lokasi_file=?","no_rawat=?,kode=?, lokasi_file=?", 4, new String[]{
                     tbDataSEP.getValueAt(tbDataSEP.getSelectedRow(), 1).toString().trim(),kodeberkas,"pages/upload/" + FileName + ".pdf", "pages/upload/" + FileName + ".pdf"
@@ -7103,7 +7136,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat upload: " + e.getMessage(), "Kesalahan", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    
     private void HapusPDF() {
         File file = new File("tmpPDF");
         String[] myFiles;

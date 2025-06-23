@@ -181,8 +181,16 @@ import rekammedis.RMRiwayatPenunjang;
 import rekammedis.RMRiwayatPengobatan;
 import bridging.ICareRiwayatPerawatan;
 import inventory.DlgTemplateResep;
+import java.io.File;
 import laporan.DlgDiagnosaPenyakit;
+import org.apache.commons.io.FileUtils;
+import org.apache.http.client.HttpClient;
+import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.impl.client.DefaultHttpClient;
 import rekammedis.RMRiwayatOperasi;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
 
 /**
  *
@@ -208,7 +216,7 @@ public final class DlgRawatJalan extends javax.swing.JDialog {
             Suspen_Piutang_Tindakan_Ralan="",Tindakan_Ralan="",Beban_Jasa_Medik_Dokter_Tindakan_Ralan="",Utang_Jasa_Medik_Dokter_Tindakan_Ralan="",
             Beban_Jasa_Medik_Paramedis_Tindakan_Ralan="",Utang_Jasa_Medik_Paramedis_Tindakan_Ralan="",Beban_KSO_Tindakan_Ralan="",Utang_KSO_Tindakan_Ralan="",
             Beban_Jasa_Sarana_Tindakan_Ralan="",Utang_Jasa_Sarana_Tindakan_Ralan="",HPP_BHP_Tindakan_Ralan="",Persediaan_BHP_Tindakan_Ralan="",
-            Beban_Jasa_Menejemen_Tindakan_Ralan="",Utang_Jasa_Menejemen_Tindakan_Ralan="", poli="", variabel="";
+            Beban_Jasa_Menejemen_Tindakan_Ralan="",Utang_Jasa_Menejemen_Tindakan_Ralan="", poli="", variabel="", FileName = "",kodeberkas="";
     private boolean[] pilih; 
     private String[] kode,nama,kategori;
     private double[] totaltnd,bagianrs,bhp,jmdokter,jmperawat,kso,menejemen;
@@ -1402,6 +1410,8 @@ public final class DlgRawatJalan extends javax.swing.JDialog {
         BtnBukaTemplate = new widget.Button();
         BtnSimpanTemplateSoap = new widget.Button();
         
+        BtnUploadBerkasSoap = new widget.Button();
+        
         
         internalFrame1 = new widget.InternalFrame();
         jPanel3 = new javax.swing.JPanel();
@@ -1889,6 +1899,24 @@ public final class DlgRawatJalan extends javax.swing.JDialog {
             }
         });
         panelGlass8.add(BtnKeluar);
+        
+        BtnUploadBerkasSoap.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/attachment.png"))); // NOI18N
+        BtnUploadBerkasSoap.setMnemonic('T');
+        BtnUploadBerkasSoap.setText("SOAP");
+        BtnUploadBerkasSoap.setToolTipText("Alt+T");
+        BtnUploadBerkasSoap.setName("BtnUploadBerkasSoap"); // NOI18N
+        BtnUploadBerkasSoap.setPreferredSize(new java.awt.Dimension(100, 30));
+        BtnUploadBerkasSoap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnUploadBerkasSoapActionPerformed(evt);
+            }
+        });
+        BtnUploadBerkasSoap.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BtnUploadBerkasSoapKeyPressed(evt);
+            }
+        });
+        panelGlass8.add(BtnUploadBerkasSoap);
 
         jPanel3.add(panelGlass8, java.awt.BorderLayout.CENTER);
 
@@ -10316,7 +10344,41 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     
     private void BtnSimpanTemplateSoapKeyPressed(java.awt.event.KeyEvent evt) {                                                 
         // TODO add your handling code here:
-    }    
+    }
+
+    private void BtnUploadBerkasSoapActionPerformed(java.awt.event.ActionEvent evt) {                                                    
+        FileName = "SOAP__" + tbPemeriksaan.getValueAt(tbPemeriksaan.getSelectedRow(), 1).toString().replaceAll("/", "") + "_" + tbPemeriksaan.getValueAt(tbPemeriksaan.getSelectedRow(), 2).toString();
+        CreatePDF(FileName);
+        String filePath = "tmpPDF/" + FileName;
+        UploadPDF(FileName, "berkasrawat/pages/upload/");
+        HapusPDF();
+
+    }                                                   
+
+    private void BtnUploadBerkasSoapKeyPressed(java.awt.event.KeyEvent evt) {                                               
+        // TODO add your handling code here:
+    }
+    
+    private void CreatePDF(String FileName) {
+        if (tabModePemeriksaan.getRowCount() == 0) {
+                    JOptionPane.showMessageDialog(null, "Maaf, data sudah habis. Tidak ada data yang bisa anda print...!!!!");
+                    BtnBatal.requestFocus();
+                } else if (tabModePemeriksaan.getRowCount() != 0) {
+                    Map<String, Object> param = new HashMap<>();
+                    param.put("namars", akses.getnamars());
+                    param.put("alamatrs", akses.getalamatrs());
+                    param.put("kotars", akses.getkabupatenrs());
+                    param.put("propinsirs", akses.getpropinsirs());
+                    param.put("kontakrs", akses.getkontakrs());
+                    param.put("emailrs", akses.getemailrs());
+                    param.put("logo", Sequel.cariGambar("select setting.logo from setting"));
+                    String pas = " and reg_periksa.no_rkm_medis like '%" + TCariPasien.getText() + "%' ";
+                    param.put("no_rawat", TNoRw.getText());
+
+                    String tgl = " pemeriksaan_ralan.tgl_perawatan between '" + Valid.SetTgl(DTPCari1.getSelectedItem() + "") + "' and '" + Valid.SetTgl(DTPCari2.getSelectedItem() + "") + "' " + pas;
+                    Valid.MyReportPDFUpload("rptJalanPemeriksaan.jasper", "report", "::[ Data Pemeriksaan Rawat Jalan ]::",FileName, param);
+                }
+    }
     
     
 
@@ -10359,6 +10421,7 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     private widget.Button BtnInputAwalMedisIGD;
     private widget.Button BtnBukaTemplate;
     private widget.Button BtnSimpanTemplateSoap;
+    private widget.Button BtnUploadBerkasSoap;
 
     private widget.Button Btn5Soap;
     private widget.Button BtnAll;
@@ -13477,5 +13540,54 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             default:
                 break;
         } 
+    }
+    
+    private void UploadPDF(String FileName, String docpath) {
+        try {
+            File file = new File("tmpPDF/" + FileName + ".pdf");
+            byte[] data = FileUtils.readFileToByteArray(file);
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPost postRequest = new HttpPost("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/upload.php?doc=" + docpath);
+            ByteArrayBody fileData = new ByteArrayBody(data, FileName + ".pdf");
+            MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+            reqEntity.addPart("file", fileData);
+            postRequest.setEntity(reqEntity);
+            httpClient.execute(postRequest);
+
+            // Menyimpan ke database
+            boolean uploadSuccess = false;
+            kodeberkas = Sequel.cariIsi("SELECT kode FROM master_berkas_digital WHERE nama LIKE '%02 SOAP RAJAL%'");
+            if (Sequel.cariInteger("SELECT COUNT(no_rawat) AS jumlah FROM berkas_digital_perawatan WHERE lokasi_file='pages/upload/" + FileName + ".pdf'") > 0) {
+                uploadSuccess = Sequel.mengedittf("berkas_digital_perawatan", "lokasi_file=?","no_rawat=?,kode=?, lokasi_file=?", 4, new String[]{
+                    tbPemeriksaan.getValueAt(tbPemeriksaan.getSelectedRow(), 1).toString().trim(),kodeberkas,"pages/upload/" + FileName + ".pdf", "pages/upload/" + FileName + ".pdf"
+                });
+            } else {
+                uploadSuccess = Sequel.menyimpantf("berkas_digital_perawatan", "?,?,?", "No.Rawat", 3, new String[]{
+                    tbPemeriksaan.getValueAt(tbPemeriksaan.getSelectedRow(), 1).toString().trim(), kodeberkas, "pages/upload/" + FileName + ".pdf"
+                });
+            }
+
+            // Menampilkan notifikasi
+            if (uploadSuccess) {
+                JOptionPane.showMessageDialog(null, "Upload berhasil!", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Upload gagal disimpan ke database.", "Peringatan", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception e) {
+            System.out.println("Upload error: " + e);
+            JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat upload: " + e.getMessage(), "Kesalahan", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void HapusPDF() {
+        File file = new File("tmpPDF");
+        String[] myFiles;
+        if (file.isDirectory()) {
+            myFiles = file.list();
+            for (int i = 0; i < myFiles.length; i++) {
+                File myFile = new File(file, myFiles[i]);
+                myFile.delete();
+            }
+        }
     }
 }

@@ -14,6 +14,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 import java.net.URI;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
@@ -31,10 +32,17 @@ import javax.swing.JTable;
 import javax.swing.event.DocumentEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import org.apache.commons.io.FileUtils;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -42,6 +50,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
+import wa.WhatsappKirimFonnte;
 
 /**
  *
@@ -63,7 +72,7 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
     private JsonNode root;
     private JsonNode nameNode;
     private JsonNode response;
-    private String link="",requestJson="",URL="",user="",URUTNOREG="",utc="",JADIKANBOOKINGSURATKONTROLAPIBPJS="no",kodedokter="",kodepoli="",noreg="";
+    private String link="",requestJson="",URL="",user="",URUTNOREG="",utc="",JADIKANBOOKINGSURATKONTROLAPIBPJS="no",kodedokter="",kodepoli="",noreg="", FileName = "",kodeberkas="";
     private ApiBPJS api=new ApiBPJS();
     private boolean status=false;
 
@@ -259,6 +268,7 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         buttonGroup1 = new javax.swing.ButtonGroup();
         jPopupMenu1 = new javax.swing.JPopupMenu();
         MnSurat = new javax.swing.JMenuItem();
+        UploadSEP = new javax.swing.JMenuItem();
         NoKartu = new widget.TextBox();
         internalFrame1 = new widget.InternalFrame();
         Scroll = new widget.ScrollPane();
@@ -318,6 +328,9 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         JK = new widget.TextBox();
         jLabel17 = new widget.Label();
         Diagnosa = new widget.TextBox();
+        BtnCari1 = new widget.Button();
+        NoRawatoday = new widget.TextBox();
+        jLabel8 = new widget.Label();
 
         jPopupMenu1.setName("jPopupMenu1"); // NOI18N
 
@@ -336,6 +349,22 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
             }
         });
         jPopupMenu1.add(MnSurat);
+
+        UploadSEP.setBackground(new java.awt.Color(255, 255, 254));
+        UploadSEP.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        UploadSEP.setForeground(new java.awt.Color(50, 50, 50));
+        UploadSEP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        UploadSEP.setText("Upload SEP ke Berkas Digital");
+        UploadSEP.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        UploadSEP.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        UploadSEP.setName("UploadSEP"); // NOI18N
+        UploadSEP.setPreferredSize(new java.awt.Dimension(300, 25));
+        UploadSEP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UploadSEPBtnPrintActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(UploadSEP);
 
         NoKartu.setEditable(false);
         NoKartu.setHighlighter(null);
@@ -568,7 +597,7 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         R1.setPreferredSize(new java.awt.Dimension(115, 23));
         panelCari.add(R1);
 
-        DTPTanggalSurat1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09-07-2023" }));
+        DTPTanggalSurat1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "17-06-2025" }));
         DTPTanggalSurat1.setDisplayFormat("dd-MM-yyyy");
         DTPTanggalSurat1.setName("DTPTanggalSurat1"); // NOI18N
         DTPTanggalSurat1.setOpaque(false);
@@ -591,7 +620,7 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         jLabel22.setPreferredSize(new java.awt.Dimension(25, 23));
         panelCari.add(jLabel22);
 
-        DTPTanggalSurat2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09-07-2023" }));
+        DTPTanggalSurat2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "17-06-2025" }));
         DTPTanggalSurat2.setDisplayFormat("dd-MM-yyyy");
         DTPTanggalSurat2.setName("DTPTanggalSurat2"); // NOI18N
         DTPTanggalSurat2.setOpaque(false);
@@ -617,7 +646,7 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         R2.setPreferredSize(new java.awt.Dimension(120, 23));
         panelCari.add(R2);
 
-        DTPTanggalKontrol1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09-07-2023" }));
+        DTPTanggalKontrol1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "17-06-2025" }));
         DTPTanggalKontrol1.setDisplayFormat("dd-MM-yyyy");
         DTPTanggalKontrol1.setName("DTPTanggalKontrol1"); // NOI18N
         DTPTanggalKontrol1.setOpaque(false);
@@ -640,7 +669,7 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         jLabel25.setPreferredSize(new java.awt.Dimension(25, 23));
         panelCari.add(jLabel25);
 
-        DTPTanggalKontrol2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09-07-2023" }));
+        DTPTanggalKontrol2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "17-06-2025" }));
         DTPTanggalKontrol2.setDisplayFormat("dd-MM-yyyy");
         DTPTanggalKontrol2.setName("DTPTanggalKontrol2"); // NOI18N
         DTPTanggalKontrol2.setOpaque(false);
@@ -719,7 +748,7 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         NoSEP.setBounds(286, 10, 150, 23);
 
         TanggalSurat.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalSurat.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09-07-2023" }));
+        TanggalSurat.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "17-06-2025" }));
         TanggalSurat.setDisplayFormat("dd-MM-yyyy");
         TanggalSurat.setName("TanggalSurat"); // NOI18N
         TanggalSurat.setOpaque(false);
@@ -799,7 +828,7 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         jLabel14.setBounds(491, 70, 100, 23);
 
         TanggalKontrol.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalKontrol.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09-07-2023 16:29:08" }));
+        TanggalKontrol.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "17-06-2025 00:09:17" }));
         TanggalKontrol.setDisplayFormat("dd-MM-yyyy HH:mm:ss");
         TanggalKontrol.setName("TanggalKontrol"); // NOI18N
         TanggalKontrol.setOpaque(false);
@@ -881,6 +910,35 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         Diagnosa.setName("Diagnosa"); // NOI18N
         FormInput.add(Diagnosa);
         Diagnosa.setBounds(509, 10, 218, 23);
+
+        BtnCari1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/wa.png"))); // NOI18N
+        BtnCari1.setMnemonic('7');
+        BtnCari1.setToolTipText("Alt+7");
+        BtnCari1.setName("BtnCari1"); // NOI18N
+        BtnCari1.setPreferredSize(new java.awt.Dimension(28, 23));
+        BtnCari1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCari1ActionPerformed(evt);
+            }
+        });
+        BtnCari1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BtnCari1KeyPressed(evt);
+            }
+        });
+        FormInput.add(BtnCari1);
+        BtnCari1.setBounds(740, 90, 40, 40);
+
+        NoRawatoday.setEditable(false);
+        NoRawatoday.setHighlighter(null);
+        NoRawatoday.setName("NoRawatoday"); // NOI18N
+        FormInput.add(NoRawatoday);
+        NoRawatoday.setBounds(890, 10, 180, 23);
+
+        jLabel8.setText("No.Rawat Hari ini :");
+        jLabel8.setName("jLabel8"); // NOI18N
+        FormInput.add(jLabel8);
+        jLabel8.setBounds(730, 10, 150, 23);
 
         PanelInput.add(FormInput, java.awt.BorderLayout.CENTER);
 
@@ -1280,6 +1338,124 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         R1.setSelected(true);
     }//GEN-LAST:event_DTPTanggalSurat2KeyPressed
 
+    private void BtnCari1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCari1ActionPerformed
+        if(NmPasien.getText().trim().equals("")&&NoRM.getText().trim().equals("")){
+            JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu data pasien...!!!");
+            TCari.requestFocus();
+        }else{
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            WhatsappKirimFonnte kirim=new WhatsappKirimFonnte(null,false);
+            kirim.setNoRm(NoRM.getText(),NoRawat.getText(),NmPoli.getText(),NmDokter.getText(),TanggalKontrol.getDate());
+            kirim.setSize(720,330);
+            kirim.setLocationRelativeTo(internalFrame1);
+            kirim.setVisible(true);
+            this.setCursor(Cursor.getDefaultCursor());
+        }
+    }//GEN-LAST:event_BtnCari1ActionPerformed
+
+    private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCari1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnCari1KeyPressed
+
+    private void UploadSEPBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UploadSEPBtnPrintActionPerformed
+        
+        int selectedRow = tbObat.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(null, "Silakan pilih data terlebih dahulu.");
+            return;
+        }
+
+        String noRM = tbObat.getValueAt(selectedRow, 3).toString().trim();
+        String tglRencana = tbObat.getValueAt(selectedRow, 10).toString().trim();
+
+        NoRawatoday.setText(Sequel.cariIsi(
+            "SELECT reg_periksa.no_rawat AS norawat_hari_ini FROM bridging_sep " +
+            "INNER JOIN bridging_surat_kontrol_bpjs ON bridging_surat_kontrol_bpjs.no_sep = bridging_sep.no_sep " +
+            "LEFT JOIN reg_periksa ON reg_periksa.no_rkm_medis = bridging_sep.nomr " +
+            "AND reg_periksa.tgl_registrasi = bridging_surat_kontrol_bpjs.tgl_rencana " +
+            "WHERE bridging_sep.nomr = '" + noRM + "' " +
+            "AND bridging_surat_kontrol_bpjs.tgl_rencana = '" + tglRencana + "'"
+        ));
+
+        FileName = "SURKON_" + tbObat.getValueAt(selectedRow, 9).toString().trim() + "_" +
+                   NoRawatoday.getText().replaceAll("/", "") + "_" +
+                   tbObat.getValueAt(selectedRow, 3).toString();
+
+        CreatePDF(FileName);
+        String filePath = "tmpPDF/" + FileName;
+        UploadPDF(FileName, "berkasrawat/pages/upload/");
+        HapusPDF();
+    }//GEN-LAST:event_UploadSEPBtnPrintActionPerformed
+
+    private void CreatePDF(String FileName) {
+        if(tbObat.getSelectedRow()!= -1){
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            try {
+                // Validasi data yang diperlukan
+                if(tbObat.getValueAt(tbObat.getSelectedRow(),12) == null ||
+                   tbObat.getValueAt(tbObat.getSelectedRow(),8) == null ||
+                   tbObat.getValueAt(tbObat.getSelectedRow(),10) == null) {
+                    throw new Exception("Data surat kontrol tidak lengkap!");
+                }
+
+                // Ambil nomor surat dari baris yang dipilih
+                String noSurat = tbObat.getValueAt(tbObat.getSelectedRow(),9).toString();
+
+                Map<String, Object> param = new HashMap<>();
+                // Parameter nomor surat yang dipilih
+                param.put("Nosuratkontrol", noSurat);
+
+                // Set parameter RS
+                param.put("namars", akses.getnamars());
+                param.put("alamatrs", akses.getalamatrs());
+                param.put("kotars", akses.getkabupatenrs());
+                param.put("propinsirs", akses.getpropinsirs());
+                param.put("kontakrs", akses.getkontakrs());
+
+                // Ambil dan validasi logo
+                param.put("logo",Sequel.cariGambar("select gambar.bpjs from gambar")); 
+
+                // Parameter dan tanda tangan
+                param.put("finger", generateFingerprint());
+
+                // Generate PDF
+                Valid.MyReportPDFUpload(
+                    "rptBridgingSuratKontrol2.jasper",
+                    "report",
+                    "::[ Data Surat Kontrol VClaim ]::",
+                    FileName,
+                    param
+                );
+
+                // Log sukses
+                System.out.println("Berhasil membuat PDF: " + FileName);
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, 
+                    "Error membuat PDF: " + e.getMessage());
+                System.out.println("Error CreatePDF: " + e);
+            } finally {
+                this.setCursor(Cursor.getDefaultCursor());
+            }
+        } else {
+            JOptionPane.showMessageDialog(null,
+                "Maaf, silahkan pilih data Surat Kontrol yang mau dicetak!");
+            BtnBatal.requestFocus();
+        }
+    }
+
+    // Method untuk generate teks fingerprint
+    private String generateFingerprint() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Dikeluarkan di ").append(akses.getnamars())
+          .append(", Kabupaten/Kota ").append(akses.getkabupatenrs())
+          .append("\nDitandatangani secara elektronik oleh ")
+          .append(tbObat.getValueAt(tbObat.getSelectedRow(),12).toString())
+          .append("\nID ").append(tbObat.getValueAt(tbObat.getSelectedRow(),8).toString())
+          .append("\n").append(Valid.SetTgl3(tbObat.getValueAt(tbObat.getSelectedRow(),10).toString()));
+        return sb.toString();
+    }
+    
     /**
     * @param args the command line arguments
     */
@@ -1300,6 +1476,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.Button BtnAll;
     private widget.Button BtnBatal;
     private widget.Button BtnCari;
+    private widget.Button BtnCari1;
     private widget.Button BtnDokter;
     private widget.Button BtnEdit;
     private widget.Button BtnHapus;
@@ -1326,6 +1503,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.TextBox NoKartu;
     private widget.TextBox NoRM;
     private widget.TextBox NoRawat;
+    private widget.TextBox NoRawatoday;
     private widget.TextBox NoSEP;
     private widget.TextBox NoSurat;
     private javax.swing.JPanel PanelInput;
@@ -1336,6 +1514,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.Tanggal TanggalKontrol;
     private widget.Tanggal TanggalSurat;
     private widget.TextBox TglLahir;
+    private javax.swing.JMenuItem UploadSEP;
     private javax.swing.ButtonGroup buttonGroup1;
     private widget.InternalFrame internalFrame1;
     private widget.Label jLabel10;
@@ -1352,6 +1531,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.Label jLabel5;
     private widget.Label jLabel6;
     private widget.Label jLabel7;
+    private widget.Label jLabel8;
     private widget.Label jLabel9;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPopupMenu jPopupMenu1;
@@ -1494,6 +1674,15 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             NmPoli.setText(tbObat.getValueAt(tbObat.getSelectedRow(),14).toString());
             Valid.SetTgl(TanggalSurat,tbObat.getValueAt(tbObat.getSelectedRow(),8).toString());
             Valid.SetTgl(TanggalKontrol,tbObat.getValueAt(tbObat.getSelectedRow(),10).toString());
+            NoRawatoday.setText(Sequel.cariIsi(
+                "SELECT reg_periksa.no_rawat AS norawat_hari_ini FROM bridging_sep " +
+                "INNER JOIN bridging_surat_kontrol_bpjs ON bridging_surat_kontrol_bpjs.no_sep = bridging_sep.no_sep " +
+                "LEFT JOIN reg_periksa ON reg_periksa.no_rkm_medis = bridging_sep.nomr " +
+                "AND reg_periksa.tgl_registrasi = bridging_surat_kontrol_bpjs.tgl_rencana " +
+                "WHERE bridging_sep.nomr = '" + NoRM.getText() + "' " +
+                "AND bridging_surat_kontrol_bpjs.tgl_rencana = '" + tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString() + "'"
+            ));
+
         }
     }
     
@@ -1650,4 +1839,167 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             
         return status;
     }
+    
+        private void UploadPDF(String FileName, String docpath) {
+            try {
+                // Upload file
+                File file = new File("tmpPDF/" + FileName + ".pdf");
+                byte[] data = FileUtils.readFileToByteArray(file);
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost postRequest = new HttpPost("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/upload.php?doc=" + docpath);
+                ByteArrayBody fileData = new ByteArrayBody(data, FileName + ".pdf");
+                MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+                reqEntity.addPart("file", fileData);
+                postRequest.setEntity(reqEntity);
+                httpClient.execute(postRequest);
+
+                // Ambil data dari tabel
+                String noRM = tbObat.getValueAt(tbObat.getSelectedRow(), 3).toString().trim();
+                String tglRencana = tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString().trim();
+
+                // Cek apakah sudah ada registrasi untuk tanggal rencana
+                String noRawat = Sequel.cariIsi(
+                    "SELECT reg_periksa.no_rawat FROM bridging_sep " +
+                    "INNER JOIN bridging_surat_kontrol_bpjs ON bridging_surat_kontrol_bpjs.no_sep = bridging_sep.no_sep " +
+                    "INNER JOIN reg_periksa ON reg_periksa.no_rkm_medis = bridging_sep.nomr " +
+                    "AND reg_periksa.tgl_registrasi = bridging_surat_kontrol_bpjs.tgl_rencana " +
+                    "WHERE bridging_sep.nomr = '" + noRM + "' " +
+                    "AND bridging_surat_kontrol_bpjs.tgl_rencana = '" + tglRencana + "'"
+                );
+
+                NoRawatoday.setText(noRawat);
+
+                // Jika no_rawat tidak ditemukan
+                if (noRawat == null || noRawat.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, 
+                        "Pasien belum melakukan registrasi untuk tanggal " + tglRencana + "\n" +
+                        "Silahkan lakukan registrasi terlebih dahulu.", 
+                        "Peringatan", 
+                        JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                // Menyimpan ke database
+                boolean uploadSuccess = false;
+                kodeberkas = Sequel.cariIsi("SELECT kode FROM master_berkas_digital WHERE nama LIKE '%07 SURKON RAJAL%'");
+
+                // Cek apakah file sudah ada
+               if (Sequel.cariInteger("SELECT COUNT(no_rawat) AS jumlah FROM berkas_digital_perawatan WHERE lokasi_file='pages/upload/" + FileName + ".pdf'") > 0) {
+                    // Update file yang sudah ada
+                    uploadSuccess = Sequel.mengedittf("berkas_digital_perawatan", 
+                        "no_rawat=?",
+                        "kode=? AND lokasi_file=?", 
+                        3, 
+                        new String[]{
+                            noRawat,
+                            kodeberkas,
+                            "pages/upload/" + FileName + ".pdf"
+                        });
+                } else {
+                    // Simpan file baru
+                    uploadSuccess = Sequel.menyimpantf("berkas_digital_perawatan", 
+                        "?,?,?", 
+                        "Berkas Digital", 
+                        3, 
+                        new String[]{
+                            noRawat,
+                            kodeberkas,
+                            "pages/upload/" + FileName + ".pdf"
+                        });
+                }
+
+                // Menampilkan notifikasi
+                if (uploadSuccess) {
+                    JOptionPane.showMessageDialog(null, 
+                        "Upload berhasil!", 
+                        "Informasi", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, 
+                        "Upload gagal disimpan ke database.", 
+                        "Peringatan", 
+                        JOptionPane.WARNING_MESSAGE);
+                }
+            } catch (Exception e) {
+                System.out.println("Upload error: " + e);
+                JOptionPane.showMessageDialog(null, 
+                    "Terjadi kesalahan saat upload: " + e.getMessage(), 
+                    "Kesalahan", 
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        
+        private void HapusPDF() {
+            File file = new File("tmpPDF");
+            String[] myFiles;
+            if (file.isDirectory()) {
+                myFiles = file.list();
+                for (int i = 0; i < myFiles.length; i++) {
+                    File myFile = new File(file, myFiles[i]);
+                    myFile.delete();
+                }
+            }
+        }
+    
+//     private void UploadPDF(String FileName, String docpath) {
+//        try {
+//            File file = new File("tmpPDF/" + FileName + ".pdf");
+//            byte[] data = FileUtils.readFileToByteArray(file);
+//            HttpClient httpClient = new DefaultHttpClient();
+//            HttpPost postRequest = new HttpPost("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/upload.php?doc=" + docpath);
+//            ByteArrayBody fileData = new ByteArrayBody(data, FileName + ".pdf");
+//            MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+//            reqEntity.addPart("file", fileData);
+//            postRequest.setEntity(reqEntity);
+//            httpClient.execute(postRequest);
+//            
+//            String noRM="", tglRencana="";
+//            noRM = tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString().trim();
+//            tglRencana = tbObat.getValueAt(tbObat.getSelectedRow(), 10).toString().trim();
+//
+//            NoRawatoday.setText(Sequel.cariIsi(
+//                "SELECT reg_periksa.no_rawat AS norawat_hari_ini FROM bridging_sep " +
+//                "INNER JOIN bridging_surat_kontrol_bpjs ON bridging_surat_kontrol_bpjs.no_sep = bridging_sep.no_sep " +
+//                "LEFT JOIN reg_periksa ON reg_periksa.no_rkm_medis = bridging_sep.nomr " +
+//                "AND reg_periksa.tgl_registrasi = bridging_surat_kontrol_bpjs.tgl_rencana " +
+//                "WHERE bridging_sep.nomr = '" + noRM + "' " +
+//                "AND bridging_surat_kontrol_bpjs.tgl_rencana = '" + tglRencana + "'"
+//            ));
+//
+//            // Menyimpan ke database
+//            boolean uploadSuccess = false;
+//            kodeberkas = Sequel.cariIsi("SELECT kode FROM master_berkas_digital WHERE kode ='07'");
+//            if (Sequel.cariInteger("SELECT COUNT(no_rawat) AS jumlah FROM berkas_digital_perawatan WHERE lokasi_file='pages/upload/" + FileName + ".pdf'") > 0) {
+//                uploadSuccess = Sequel.mengedittf("berkas_digital_perawatan", "lokasi_file=?","no_rawat=?,kode=?, lokasi_file=?", 4, new String[]{
+//                    NoRawatoday.getText(),kodeberkas,"pages/upload/" + FileName + ".pdf", "pages/upload/" + FileName + ".pdf"
+//                });
+//            } else {
+//                uploadSuccess = Sequel.menyimpantf("berkas_digital_perawatan", "?,?,?", "No.Rawat", 3, new String[]{
+//                   NoRawatoday.getText(), kodeberkas, "pages/upload/" + FileName + ".pdf"
+//                });
+//            }
+//
+//            // Menampilkan notifikasi
+//            if (uploadSuccess) {
+//                JOptionPane.showMessageDialog(null, "Upload berhasil!", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+//            } else {
+//                JOptionPane.showMessageDialog(null, "Upload gagal disimpan ke database.", "Peringatan", JOptionPane.WARNING_MESSAGE);
+//            }
+//        } catch (Exception e) {
+//            System.out.println("Upload error: " + e);
+//            JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat upload: " + e.getMessage(), "Kesalahan", JOptionPane.ERROR_MESSAGE);
+//        }
+//    }
+//    
+//    private void HapusPDF() {
+//        File file = new File("tmpPDF");
+//        String[] myFiles;
+//        if (file.isDirectory()) {
+//            myFiles = file.list();
+//            for (int i = 0; i < myFiles.length; i++) {
+//                File myFile = new File(file, myFiles[i]);
+//                myFile.delete();
+//            }
+//        }
+//    }
 }

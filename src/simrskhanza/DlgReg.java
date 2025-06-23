@@ -229,6 +229,8 @@ import surat.SuratPulangAtasPermintaanSendiri;
 import surat.SuratSakit;
 import surat.SuratSakitPihak2;
 import surat.SuratTidakHamil;
+import wa.WhatsappKirimFonnte;
+
 /**
  *
  * @author dosen
@@ -246,6 +248,7 @@ public final class DlgReg extends javax.swing.JDialog {
     public  DlgRujukMasuk rujukmasuk=new DlgRujukMasuk(null,false);
     private PreparedStatement ps,ps3,pscaripiutang;
     private ResultSet rs;
+    private widget.Button BtnWa;
     private int pilihan=0,i=0,kuota=0,jmlparsial=0;
     private boolean ceksukses=false;
     private String nosisrute="",aktifkanparsial="no",BASENOREG="",finger="",TANGGALMUNDUR="yes",
@@ -954,6 +957,9 @@ public final class DlgReg extends javax.swing.JDialog {
     private void initComponents() {
         
         MnUpdateUmur = new javax.swing.JMenuItem();
+        TStatus1 = new widget.TextBox();
+        jLabel40 = new widget.Label();
+        BtnCheckin = new widget.Button();
 
         jPopupMenu1 = new javax.swing.JPopupMenu();
         MnDataRM = new javax.swing.JMenu();
@@ -6410,6 +6416,34 @@ public final class DlgReg extends javax.swing.JDialog {
             }
         });
         panelGlass6.add(BtnKeluar);
+        
+        jLabel40.setText("Status :");
+        jLabel40.setName("jLabel40"); // NOI18N
+        panelGlass6.add(jLabel40);
+        
+        TStatus1.setEditable(false);
+        TStatus1.setHighlighter(null);
+        TStatus1.setName("TStatus1"); // NOI18N
+        TStatus1.setPreferredSize(new java.awt.Dimension(80, 24));
+        panelGlass6.add(TStatus1);
+        
+        BtnCheckin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/save-16x16.png"))); // NOI18N
+        BtnCheckin.setMnemonic('S');
+        BtnCheckin.setText("Checkin");
+        BtnCheckin.setToolTipText("Alt+S");
+        BtnCheckin.setName("BtnCheckin"); // NOI18N
+        BtnCheckin.setPreferredSize(new java.awt.Dimension(100, 30));
+        BtnCheckin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCheckinActionPerformed(evt);
+            }
+        });
+        BtnCheckin.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BtnCheckinKeyPressed(evt);
+            }
+        });
+        panelGlass6.add(BtnCheckin);
         
         Btn_sep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/130.png"))); // NOI18N
         Btn_sep.setMnemonic('M');
@@ -15366,7 +15400,20 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
                                 umur,sttsumur,TNoRw.getText()
                             });
     BtnCariActionPerformed(null);
-    }      
+    }
+    
+    private void BtnCheckinActionPerformed(java.awt.event.ActionEvent evt) {                                           
+    Sequel.mengedittf("referensi_mobilejkn_bpjs", "norm=?", "status='Checkin', validasi=now()", 1, new String[]{
+        tbPetugas.getValueAt(tbPetugas.getSelectedRow(), 7).toString() });
+    }                                          
+
+    private void BtnCheckinKeyPressed(java.awt.event.KeyEvent evt) {                                      
+        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+            BtnCheckinActionPerformed(null);
+        }else{
+            Valid.pindah(evt, BtnCari, BtnBatal);
+        }
+    }               
     
     /**
     * @param args the command line arguments
@@ -15388,6 +15435,9 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
     
     private widget.Button Btn_sep;
     private javax.swing.JMenuItem MnUpdateUmur;
+    private widget.TextBox TStatus1;
+    private widget.Label jLabel40;
+    private widget.Button BtnCheckin;
     
     private widget.TextBox AsalRujukan;
     private widget.Button BtnAll;
@@ -15992,6 +16042,7 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
             Sequel.cariIsi("select rujuk_masuk.perujuk from rujuk_masuk where rujuk_masuk.no_rawat=?", AsalRujukan,tbPetugas.getValueAt(tbPetugas.getSelectedRow(),2).toString());
             TNoRw.setText(tbPetugas.getValueAt(tbPetugas.getSelectedRow(),2).toString());
             TNoReg.setText(tbPetugas.getValueAt(tbPetugas.getSelectedRow(),1).toString());    
+            Sequel.cariIsi("select referensi_mobilejkn_bpjs.status from referensi_mobilejkn_bpjs where norm=?", TStatus1, tbPetugas.getValueAt(tbPetugas.getSelectedRow(), 7).toString());
         }
     }
 
@@ -17199,6 +17250,22 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
         MnRMSkrining.setName("MnRMSkrining"); 
         MnRMSkrining.setPreferredSize(new java.awt.Dimension(200, 26));
         
+        BtnWa = new widget.Button();
+        BtnWa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/wa.png"))); // NOI18N
+        BtnWa.setMnemonic('7');
+        BtnWa.setToolTipText("Alt+7");
+        BtnWa.setName("BtnWa"); // NOI18N
+        BtnWa.setPreferredSize(new java.awt.Dimension(28, 23));
+        BtnWa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnWaActionPerformed(evt);
+            }
+        });
+
+        FormInput.add(BtnWa);
+        BtnWa.setBounds(220, 12, 23, 23);
+        // ChkTracker.setBounds(196, 12, 23, 23);
+        
         MnRMOperasi.add(MnPenilaianPreInduksi);
 	MnRMOperasi.add(MnChecklistPreOperasi);
         MnRMOperasi.add(MnSignInSebelumAnestesi);
@@ -17368,6 +17435,21 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
             tabMode.setValueAt(kdpoli.getText(),tbPetugas.getSelectedRow(),21);
             tabMode.setValueAt(kdpnj.getText(),tbPetugas.getSelectedRow(),22);
             emptTeks();
+        }
+    }
+    
+    private void BtnWaActionPerformed(java.awt.event.ActionEvent evt) {
+        if (TPasien.getText().trim().equals("") && TPasien.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Maaf, Silahkan anda pilih dulu data pasien...!!!");
+            TCari.requestFocus();
+        } else {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            WhatsappKirimFonnte kirim = new WhatsappKirimFonnte(null, false);
+            kirim.setNoRm(TNoRM.getText(), TNoReg.getText(), TPoli.getText(), TDokter.getText(), DTPReg.getDate());
+            kirim.setSize(720, 330);
+            kirim.setLocationRelativeTo(internalFrame1);
+            kirim.setVisible(true);
+            this.setCursor(Cursor.getDefaultCursor());
         }
     }
 }
